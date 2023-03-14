@@ -10,6 +10,9 @@
  * @author: Jack Doyle, jack@greensock.com
  */
 /* eslint-disable */
+let xycnum = 0;
+
+
 (function(window, moduleName) {
 
 		"use strict";
@@ -309,6 +312,7 @@
 				_fps, _req, _id, _gap, _nextTime,
 				_tick = function(manual) {
 					console.log('manual',manual)
+					
 					var elapsed = _getTime() - _lastUpdate,
 						overlap, dispatch;
 					if (elapsed > _lagThreshold) {
