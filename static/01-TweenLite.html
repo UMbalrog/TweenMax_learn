@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8"/>
 <title>TweenMax demon</title>
-<script src="src/uncompressed/TweenLite.js"></script>
+<script src="src/uncompressed/TweenLite_dev.js"></script>
 <!--www.tweenmax.com.cn演示实例-->
 
 <!-- Demo styles -->
@@ -19,9 +19,9 @@ p {
 	margin: 10px;
 }
 #scoreDisplay {
-	font-size: 400px;
-	text-align: center;
-	margin-top: 70px;
+	font-size: 200px;
+	text-align: left;
+	margin-top: 30px;
 }
 </style>
 </head>
@@ -48,7 +48,7 @@ p {
 	
 	//在tween update时通过这个function输出.
 	function showScore() {
-		// console.log(demo.score.toFixed(0));
+		// console.log(demo.score);
 		scoreDisplay.innerHTML = demo.score.toFixed(0);
 		scoreDisplay.style.color = `rgb(${demo.red}, 0, 0)`;
 	}

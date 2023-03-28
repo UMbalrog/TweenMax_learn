@@ -3,10 +3,10 @@
 	<head>
 		<meta charset="utf-8">
 		<title>TweenMax demon</title>
-    <script src="src/uncompressed/TweenLite.js"></script>
-        <!--www.tweenmax.com.cn演示实例-->
     <!-- <script src="src/uncompressed/TweenMax.js"></script> -->
-		<!-- Demo styles -->
+        <!--www.tweenmax.com.cn演示实例-->
+    <script src="src/uncompressed/TimelineLite.js"></script>
+		
 		<style>
 			body {
 				background: #fff;
@@ -26,20 +26,33 @@
 				border-radius:6px;
 				margin-top:4px;
 				display:inline-block
-			  }
-		    .green{
+			}
+			.green{
 				background-color:#6fb936;
-			  }
+			}
 		</style>
 	</head>
 	<body>
     <p>对目标的CSS属性进行动画需要使用CSSPlugin插件， 由于TweenMax 包含了CSSPlugin，因此无需另外加载。</p>
-		<div class="box green"> </div>
+		<button onclick="play()">play</button>
+		<div class="box green"></div>
 		<script>
-			
-			TweenLite.to('.box', 10, {
+			let tl = new TimelineLite({paused: true});
+			// let 
+			tl.to('.box', 2, {
 				left: 700,
+				ease: Power0.easeIn
+			})
+			tl.to('.box', 2, {
+				top: 500,
+				ease: Power0.easeIn
 			});
+
+			function play() {
+				tl.play();
+			}
+			
+			console.log(tl)
 		</script>
 	</body>
 </html>
