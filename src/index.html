@@ -7,12 +7,53 @@
   <title>Timeline</title>
   <script src="./index.js"></script>
 </head>
+<style>
+  body {
+    background-color: #fff;
+    font-family: sans-serif;
+    color: #1d1d1d;
+    margin: 0;
+    font-size: 16px;
+  }
+  p {
+    margin: 10px;
+  }
+  #scoreDisplay {
+    font-size: 200px;
+    text-align: left;
+    margin-top: 30px;
+  }
+  </style>
 <body>
-  <div id="app">
+  <p>app</p>
+<div id="demo">
+  <div id="scoreDisplay"></div>
+</div>
 
-  </div>
-  <script>
-    console.log(new EventDispatcher())
-  </script>
+<script>
+	var demo = {
+		score:1500,
+		red: 0
+	},
+	scoreDisplay = document.getElementById("scoreDisplay");
+	
+    //创建一个tween在20秒内改变score的属性值从0到100.
+	TweenLite.to(demo, 2 ,{
+		red:255,
+		score:5100,
+		onUpdate:showScore
+	});
+	
+	//在tween update时通过这个function输出.
+	function showScore() {
+		// console.log(demo.score);
+		scoreDisplay.innerHTML = demo.score.toFixed(0);
+		scoreDisplay.style.color = `rgb(${demo.red}, 0, 0)`;
+		// for(var i=0; i<1000; i++){
+		// 	let a = i;
+		// 	console.log(a);
+		// }
+	}
+</script>
 </body>
 </html>

@@ -305,7 +305,7 @@ let xycnum = 0;
 				_tick = function(manual) {
 					// console.log('manual',manual)
 					
-					var elapsed = _getTime() - _lastUpdate,
+					var elapsed = _getTime() - _lastUpdate, // 距离上次的时间
 						overlap, dispatch;
 					
 					if (elapsed > _lagThreshold) { // 滞后时间对比
@@ -313,13 +313,15 @@ let xycnum = 0;
 					}
 					_lastUpdate += elapsed;
 					_self.time = (_lastUpdate - _startTime) / 1000;
-					
+					// console.log('_self.time', _self.time)
+					// console.log('elapsed', elapsed)
+
 					overlap = _self.time - _nextTime;
-					console.log('overlap', overlap)
+					
 					if (!_fps || overlap > 0 || manual === true) {
 						_self.frame++;
 						// 计算时间好像没什么用，没有校准
-						// _nextTime += overlap + (overlap >= _gap ? 0.004 : _gap - overlap);
+						_nextTime += overlap + (overlap >= _gap ? 0.004 : _gap - overlap);
 						dispatch = true;
 					}
 					if (manual !== true) { //make sure the request is made before we dispatch the "tick" event so that timing is maintained. Otherwise, if processing the "tick" requires a bunch of time (like 15ms) and we're using a setTimeout() that's based on 16.7ms, it'd technically take 31.7ms between frames otherwise.
@@ -391,6 +393,7 @@ let xycnum = 0;
 			};
 			// 开始启动
 			_self.fps(fps);
+			console.log('_self', _self);
 
 			//a bug in iOS 6 Safari occasionally prevents the requestAnimationFrame from working initially, so we use a 1.5-second timeout that automatically falls back to setTimeout() if it senses this condition.
 			setTimeout(function() {
@@ -529,7 +532,7 @@ let xycnum = 0;
 
 		p = SimpleTimeline.prototype = new Animation();
 		p.constructor = SimpleTimeline;
-		p.kill()._gc = false;
+		// p.kill()._gc = false;
 		p._first = p._last = p._recent = null;
 		p._sortChildren = false;
 
@@ -999,12 +1002,13 @@ let xycnum = 0;
       _nextGCFrame = 30;
 
 		_rootTimeline._startTime = _ticker.time;
+		
 		_rootFramesTimeline._startTime = _ticker.frame;
 		_rootTimeline._active = _rootFramesTimeline._active = true;
 
 		Animation._updateRoot = TweenLite.render = function() {
 				var i, a, p;
-				
+				console.log('_rootTimeline._startTime', _rootTimeline._startTime)
 				_rootTimeline.render((_ticker.time - _rootTimeline._startTime) * _rootTimeline._timeScale, false, false);
 				_rootFramesTimeline.render((_ticker.frame - _rootFramesTimeline._startTime) * _rootFramesTimeline._timeScale, false, false);
 				
@@ -1036,7 +1040,7 @@ let xycnum = 0;
 			};
 
 		_ticker.addEventListener("tick", Animation._updateRoot);
-
+		console.log('_rootFramesTimeline', _rootFramesTimeline);
 		var _register = function(target, tween, scrub) {
 				var id = target._gsTweenID, a, i;
 				if (!_tweenLookup[id || (target._gsTweenID = id = "t" + (_tweenLookupNum++))]) {
@@ -1205,6 +1209,7 @@ let xycnum = 0;
 
 				} else {
 					propLookup[p] = _addPropTween.call(this, target, p, "get", v, p, 0, null, this.vars.stringFilter, index);
+					// console.log('propLookup[p]', propLookup[p]);
 				}
 			}
 
@@ -1227,7 +1232,7 @@ let xycnum = 0;
 				duration = self._duration,
 				prevRawPrevTime = self._rawPrevTime,
 				isComplete, callback, pt, rawPrevTime;
-			// console.log('渲染函数', self._time)
+			
 			if (time >= duration - _tinyNum && time >= 0) { //to work around occasional floating point math artifacts.
 				self._totalTime = self._time = duration;
 				self.ratio = self._ease._calcEnd ? self._ease.getRatio(1) : 1;
@@ -1335,6 +1340,7 @@ let xycnum = 0;
 				}
 			}
 			pt = self._firstPT;
+			// console.log('渲染函数', self._firstPT);
 			while (pt) {
 				if (pt.f) {
 					pt.t[pt.p](pt.c * self.ratio + pt.s);
