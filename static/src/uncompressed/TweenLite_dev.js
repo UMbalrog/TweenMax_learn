@@ -1008,7 +1008,7 @@ let xycnum = 0;
 
 		Animation._updateRoot = TweenLite.render = function() {
 				var i, a, p;
-				console.log('_rootTimeline._startTime', _rootTimeline._startTime)
+
 				_rootTimeline.render((_ticker.time - _rootTimeline._startTime) * _rootTimeline._timeScale, false, false);
 				_rootFramesTimeline.render((_ticker.frame - _rootFramesTimeline._startTime) * _rootFramesTimeline._timeScale, false, false);
 				
@@ -1040,7 +1040,7 @@ let xycnum = 0;
 			};
 
 		_ticker.addEventListener("tick", Animation._updateRoot);
-		console.log('_rootFramesTimeline', _rootFramesTimeline);
+		
 		var _register = function(target, tween, scrub) {
 				var id = target._gsTweenID, a, i;
 				if (!_tweenLookup[id || (target._gsTweenID = id = "t" + (_tweenLookupNum++))]) {

@@ -98,6 +98,7 @@ let _reqAnimFrame = window.requestAnimationFrame,
     },
   _lastUpdate = _getTime(),
   _tickWord = "tick",
+  _tinyNum = 0.00000001,
   _tickerActive = false;
 
 let Ticker = function (fps, useRAF) {
@@ -129,7 +130,7 @@ let Ticker = function (fps, useRAF) {
       }
 
       if (manual !== true) {
-        // console.log('_req', _req)
+        console.log('_req', _self.time)
         _id = _req(_tick);
       }
 
@@ -545,35 +546,7 @@ let AnimationRoot = function () {
   );
 
   if (_ticker.frame >= _nextGCFrame) {
-    //dump garbage every 120 frames or whatever the user sets TweenLite.autoSleep to
-    // _nextGCFrame = _ticker.frame + (parseInt(TweenLite.autoSleep, 10) || 120);
-    // for (p in _tweenLookup) {
-    //   a = _tweenLookup[p].tweens;
-    //   i = a.length;
-    //   while (--i > -1) {
-    //     if (a[i]._gc) {
-    //       a.splice(i, 1);
-    //     }
-    //   }
-    //   if (a.length === 0) {
-    //     delete _tweenLookup[p];
-    //   }
-    // }
-    //if there are no more tweens in the root timelines, or if they're all paused, make the _timer sleep to reduce load on the CPU slightly
-    // p = _rootTimeline._first;
-    // if (!p || p._paused)
-    //   if (
-    //     TweenLite.autoSleep &&
-    //     !_rootFramesTimeline._first &&
-    //     _ticker._listeners.tick.length === 1
-    //   ) {
-    //     while (p && p._paused) {
-    //       p = p._next;
-    //     }
-    //     if (!p) {
-          _ticker.sleep();
-    //     }
-    //   }
+    
   }
 };
 
@@ -712,42 +685,55 @@ TweenLite_p.render = function (time, suppressEvents, force) {
     isComplete,
     pt;
 
- 
-  self._totalTime = self._time = time;
+  if (time >= duration - _tinyNum && time >= 0) { //to work around occasional floating point math artifacts.
+    self._totalTime = self._time = duration;
+    self.ratio = 1;
+    if (!self._reversed ) {
+      isComplete = true;
+      callback = "onComplete";
+    }
+    setTimeout(() => {
+      _ticker.sleep();
+    }, 1000);
+  }else{
+    
+    self._totalTime = self._time = time;
 
-  if (self._easeType) {
-    var r = time / duration,
-      type = self._easeType,
-      pow = self._easePower;
-    if (type === 1 || (type === 3 && r >= 0.5)) {
-      r = 1 - r;
+    if (self._easeType) {
+      var r = time / duration,
+        type = self._easeType,
+        pow = self._easePower;
+      if (type === 1 || (type === 3 && r >= 0.5)) {
+        r = 1 - r;
+      }
+      if (type === 3) {
+        r *= 2;
+      }
+      if (pow === 1) {
+        r *= r;
+      } else if (pow === 2) {
+        r *= r * r;
+      } else if (pow === 3) {
+        r *= r * r * r;
+      } else if (pow === 4) {
+        r *= r * r * r * r;
+      }
+      self.ratio =
+        type === 1
+          ? 1 - r
+          : type === 2
+          ? r
+          : time / duration < 0.5
+          ? r / 2
+          : 1 - r / 2;
+    } else {
+      self.ratio = (time / duration);
     }
-    if (type === 3) {
-      r *= 2;
-    }
-    if (pow === 1) {
-      r *= r;
-    } else if (pow === 2) {
-      r *= r * r;
-    } else if (pow === 3) {
-      r *= r * r * r;
-    } else if (pow === 4) {
-      r *= r * r * r * r;
-    }
-    self.ratio =
-      type === 1
-        ? 1 - r
-        : type === 2
-        ? r
-        : time / duration < 0.5
-        ? r / 2
-        : 1 - r / 2;
-  } else {
-    self.ratio = (time / duration);
   }
   
-
   if (self._time === prevTime && !force) {
+    // console.log('self', self._time);
+    // 动画执行完成不在渲染
     return;
   } else if (!self._initted) {
     self._init();
@@ -755,7 +741,7 @@ TweenLite_p.render = function (time, suppressEvents, force) {
   }
   
   pt = self._firstPT;
-  // console.log('渲染函数', self._firstPT);
+  
   while (pt) {
     if (pt.f) {
       pt.t[pt.p](pt.c * self.ratio + pt.s);
