@@ -23,36 +23,51 @@
     text-align: left;
     margin-top: 30px;
   }
+  p{
+    margin-bottom:20px;
+  }
+  .box {
+    width:50px;
+    height:50px;
+    position:relative;
+    border-radius:6px;
+    margin-top:4px;
+    display:inline-block
+  }
+  .green{
+    background-color:#6fb936;
+  }
   </style>
 <body>
   <p>app</p>
 <div id="demo">
   <div id="scoreDisplay"></div>
+  <p>对目标的CSS属性进行动画需要使用CSSPlugin插件， 由于TweenMax 包含了CSSPlugin，因此无需另外加载。</p>
+  <div id="green" class="box green"></div>
 </div>
 
 <script>
 	var demo = {
 		score:1500,
-		red: 0
+		red: 0,
+    left: 10,
 	},
 	scoreDisplay = document.getElementById("scoreDisplay");
-	
+	green = document.getElementById("green");
     //创建一个tween在20秒内改变score的属性值从0到100.
-	TweenLite.to(demo, 2 ,{
-		red:255,
-		score:5100,
+	TweenLite.to(demo, .5 ,{
+		red: 255,
+		score: 5100,
+    left: 400,
 		onUpdate:showScore
 	});
 	
 	//在tween update时通过这个function输出.
 	function showScore() {
 		// console.log(demo.score);
-		scoreDisplay.innerHTML = demo.score.toFixed(0);
-		scoreDisplay.style.color = `rgb(${demo.red}, 0, 0)`;
-		// for(var i=0; i<1000; i++){
-		// 	let a = i;
-		// 	console.log(a);
-		// }
+		// scoreDisplay.innerHTML = demo.score.toFixed(0);
+		// scoreDisplay.style.color = `rgb(${demo.red}, 0, 0)`;
+		green.style.marginLeft = `${demo.left}px`;
 	}
 </script>
 </body>

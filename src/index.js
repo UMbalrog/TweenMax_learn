@@ -535,7 +535,10 @@ TweenLite._frame = _ticker.frame;
 TweenLite._active = true;
 
 let AnimationRoot = function () {
-  var i, a, p;
+  if(!Tween){
+    _ticker.sleep();
+    return;
+  }
   // console.log('TweenLite', TweenLite.render);
   // return;
   // console.log('_rootTimeline._startTime', (_ticker.time - TweenLite._startTime) * TweenLite._timeScale)
