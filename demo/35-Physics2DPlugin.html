@@ -1,0 +1,79 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<title>TweenMax demon</title>
+<script src="minified/jquery-1.10.1.min.js"></script>
+<script src="minified/TweenMax.min.js"></script>
+<script src="minified/Physics2DPlugin.min.js"></script>
+<script src="minified/GSDevTools.min.js"></script>
+
+<!--www.tweenmax.com.cn演示实例-->
+<!-- Demo styles -->
+<style>
+body {
+  background-color:#555;
+  margin:0;
+}
+
+#featureAnimation {
+  background-color:#000;
+  height: 262px;
+  overflow: hidden;
+  position: relative;
+  width: 800px;
+  margin: auto;
+}
+
+.dot {
+  position:absolute;
+  background-color: #91e600;
+  width:50px;
+  height:50px;
+  border-radius:50%;
+}
+
+
+</style>
+</head>
+<body>
+
+<div class="feature" id="featureAnimation">
+  <div id="featureBackground"></div>
+</div>
+
+<script>
+var master = new TimelineMax(),
+    bg = $("#featureBackground")
+  
+master.add(control())
+
+function control() {
+  var dots = new TimelineLite(),  
+      qty = 80,
+      duration = 2.5,
+      colors = ["#91e600","#84d100","#73b403","#528003"];
+
+  for (i = 0; i < qty; i++) {
+    dot = $("<div class='dot'/>").appendTo(bg)[0];
+    var color = colors[(Math.random() * colors.length) | 0];
+    TweenLite.set(dot, {backgroundColor:color, x:400, y:300});
+    delay = Math.random() * duration;
+    dots.to(dot, duration, {physics2D:{velocity:Math.random() * 400 + 150, angle:Math.random() * 40 + 250, gravity:500}}, delay);
+  }
+  return dots;
+
+}
+
+GSDevTools.create({
+  container:"#featureAnimation",
+  minimal:true
+});
+
+
+
+
+
+        </script>
+</body>
+</html>

@@ -1,0 +1,75 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>TweenMax demon</title>
+		<script src="minified/TweenMax.min.js"></script>
+        <!--tweenmax中文网演示实例 www.tweenmax.com.cn-->
+		<!-- Demo styles -->
+		<style>
+			body {
+				background: #fff;
+				font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+				font-size: 14px;
+				color: #000;
+				margin: 0 10px;
+				padding: 0;
+			}
+			h2 {
+			  font-size:30px;
+			  line-height:30px;
+			  margin: 10px 0 10px 0;
+			}
+			
+			p{
+			  line-height:22px;
+			  margin-top:0;
+			  margin-bottom:16px;
+			  width:650px;
+			}
+			
+			#demo {
+			  height:100%;
+			  position:relative;
+			}
+			.box {
+			  width:50px;
+			  height:50px;
+			  position:relative;
+			  border-radius:6px;
+			  margin-top:4px;
+			  display:inline-block
+			}
+			
+			.green{
+			  background-color:#6fb936;
+			}
+			
+			.orange {
+			  background-color:#f38630;
+			}
+			.grey {
+			  background-color:#989898;
+			}
+		</style>
+	</head>
+	<body>
+	<h2>TweenMax.staggerTo()</h2>
+    <div id="demo">
+      <p>以下例子每个动画的开始时间按0.5s 错开。TweenLite没有stagger。</p>
+      <div class="box green"></div>
+      <div class="box grey"></div>
+      <div class="box orange"></div>
+      <div class="box green"></div>
+      <div class="box grey"></div>
+      <div class="box orange"></div>
+      <div class="box green"></div>
+      <div class="box grey"></div>
+      <div class="box orange"></div>
+    </div>
+		<script>
+		    //TweenMax、TimelineLite、TimelineMax可以使用stagger（错开动画），TweenLite则没有。
+			TweenMax.staggerTo(".box", 1, {rotation:300, y:300}, 0.5);
+		</script>
+	</body>
+</html>

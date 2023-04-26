@@ -1,0 +1,112 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>TweenMax demon</title>
+		<script src="minified/TweenMax.min.js"></script>
+        <!--tweenmax中文网演示实例 www.tweenmax.com.cn-->
+		<!-- Demo styles -->
+<style>
+
+body {
+  background-color:#1d1d1d;
+  font-family: "Asap", sans-serif;
+  color:#989898;
+  margin:0 10px;
+  font-size:16px;
+}
+
+h1, h2, h3 {
+  font-family: "Signika Negative", sans-serif;
+  margin: 10px 0 10px 0;
+  color:#f3f2ef;
+}
+
+h1 { 
+  font-size:36px;
+}
+
+h2 {
+  font-size:30px;
+}
+
+h3 {
+  font-size:24px;
+}
+
+p{
+  line-height:22px;
+  margin-bottom:16px;
+  width:650px;
+}
+
+#demo {
+  position:relative;
+}
+.box {
+  width:50px;
+  height:50px;
+  position:relative;
+  border-radius:6px;
+  margin:4px;
+  display:inline-block;
+  background:grey;
+}
+
+.green{
+  background-color:#6fb936;
+}
+
+.orange {
+  background-color:#f38630;
+}
+.grey {
+  background-color:#989898;
+}
+
+</style>
+	</head>
+	<body>
+        <h2>TweenMax.staggerTo() with cycle</h2>
+        <div id="demo">
+          <p>cycle 属性允许在stagger的相关方法中使用循环设定的属性值，包括TweenMax, TimelineLite and TimelineMax (JS注释中有详细列表)。</p>
+           
+          <div class="box"></div>
+          <div class="box"></div>
+          <div class="box"></div>
+          <div class="box"></div>
+          <div class="box"></div>
+          <div class="box"></div>
+          <div class="box"></div>
+          <div class="box"></div>
+        </div>
+		<script>
+			TweenMax.staggerTo(".box", 1, {
+			  cycle:{
+				//an array of values
+				backgroundColor:["red", "white", "#00f"],
+				//function that returns a value
+				y:function(index, target){
+				  //console.log(index, target)  <div class="box"></div>
+				  //index represents index of tween in the array of targets
+				  return index * 20;
+				}
+			  }
+			}, 0.5);
+			
+			/* The cycle property is available in:
+			
+			TweenMax.staggerFromTo()
+			TweenMax.staggerFrom()
+			TweenMax.staggerTo()
+			TimelineLite.staggerFromTo()
+			TimelineLite.staggerFrom()
+			TimelineLite.staggerTo()
+			TimelineMax.staggerFromTo()
+			TimelineMax.staggerFrom()
+			TimelineMax.staggerTo()
+			
+			*/
+		</script>
+	</body>
+</html>

@@ -1,0 +1,161 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>TweenMax demon</title>
+		<script src="minified/TweenMax.min.js"></script>
+        <script src="minified/jquery-1.10.1.min.js"></script>
+        <!--tweenmax中文网演示实例 www.tweenmax.com.cn-->
+		<!-- Demo styles -->
+<style>
+
+html, body {
+  height: 100%;
+}
+
+body {
+  background-color:#1d1d1d;
+  font-family: "Asap", sans-serif;
+  color:#989898;
+  margin:0 10px;
+  font-size:16px;
+}
+
+h1, h2, h3 {
+  font-family: "Signika Negative", sans-serif;
+  margin: 10px 0 10px 0;
+  color:#f3f2ef;
+}
+
+h1 { 
+  font-size:36px;
+}
+
+h2 {
+  font-size:30px;
+}
+
+h3 {
+  font-size:24px;
+}
+
+p{
+  line-height:22px;
+  margin-bottom:16px;
+  width:650px;
+}
+
+#demo {
+  height:100%;
+  position:relative;
+}
+.box {
+  width:50px;
+  height:50px;
+  position:relative;
+  border-radius:6px;
+  margin:4px;
+  display:inline-block;
+  background:grey;
+}
+
+.green{
+  background-color:#6fb936;
+}
+
+.orange {
+  background-color:#f38630;
+}
+.grey {
+  background-color:#989898;
+}
+
+#controls {
+  position:absolute;
+  width: 100%;
+  bottom: 20px;
+  text-align: center;
+}
+
+button {
+  padding:10px;
+  margin:0 5px;
+}
+
+</style>
+	</head>
+	<body>
+        
+        <div id="demo">
+          <h2>TimelineLite.staggerTo() with cycle</h2>
+          <p>cycle 属性允许在stagger的相关方法中使用循环设定的属性值，包括TweenMax, TimelineLite and TimelineMax (JS注释中有详细列表)。</p>
+           
+          <div class="box"></div>
+          <div class="box"></div>
+          <div class="box"></div>
+          <div class="box"></div>
+          <div class="box"></div>
+          <div class="box"></div>
+          <div class="box"></div>
+          <div class="box"></div>
+          
+          <div id="controls">
+      <button id="play">play</button>
+      <button id="pause">pause</button>
+      <button id="reverse">reverse</button>
+    </div>
+        </div>
+        
+        
+		<script>
+		    // *note TimelineLite.staggerFrom() and TimelineMax.staggerFrom() use identical syntax.
+			var tl = new TimelineLite(); 
+			tl.staggerFrom(".box", 1, {
+			  cycle:{
+				//an array of values
+				backgroundColor:["red", "white", "#00f"],
+				//function that returns a value
+				y:function(index){
+				  return index * 20;
+				}
+			  }
+			}, 0.5);
+			
+			/* The cycle property is available in:
+			
+			TweenMax.staggerFromTo()
+			TweenMax.staggerFrom()
+			TweenMax.staggerTo()
+			TimelineLite.staggerFromTo()
+			TimelineLite.staggerFrom()
+			TimelineLite.staggerTo()
+			TimelineMax.staggerFromTo()
+			TimelineMax.staggerFrom()
+			TimelineMax.staggerTo()
+			
+			*/
+			
+			$("#play").click(function(){
+			  if(tl.progress() < 1){
+				tl.play();
+			  } else {
+				tl.restart();
+			  }
+			})
+			
+			$("#pause").click(function(){
+			  tl.pause();
+			})
+			
+			
+			$("#reverse").click(function(){
+			  if(tl.progress() > 0){
+				tl.reverse();
+			  } else {
+				tl.reverse(0); //reverses from the end
+			  }
+			})
+		
+		</script>
+	</body>
+</html>

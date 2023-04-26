@@ -1,0 +1,80 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>TweenMax demon</title>
+        <script src="minified/TweenMax.min.js"></script>
+        <!--www.tweenmax.com.cn演示实例-->
+        
+		<!-- Demo styles -->
+		<style>
+			body {
+				background: #fff;
+				font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+				font-size: 14px;
+				color: #000;
+				margin: 0 10px;
+				padding: 0;
+			}
+			p{
+				margin-bottom:20px;
+			}
+			ul{
+				}
+			li{
+				width:20%;
+				float:left;
+				height:120px;
+				list-style:none;}	
+			.box {
+				width:50px;
+				height:50px;
+				position:absolute;
+				margin-top:4px;
+				display:inline-block
+			  }
+		    .green{
+				background-color:#6fb936;
+			  }
+			#box1{
+			}
+		</style>
+	</head>
+	<body>
+    <p>CSSPlugin插件可对目标的CSS属性进行动画。</p>
+    <ul>
+		<li><div class="box green" id="box1"> </div></li>
+        <li><div class="box green" id="box2"> </div></li>
+        <li><div class="box green" id="box3"> </div></li>
+        <li><div class="box green" id="box4"> </div></li>
+        <li><div class="box green" id="box5"> </div></li>
+        <li><div class="box green" id="box6"> </div></li>
+        <li><div class="box green" id="box7"> </div></li>
+        <li><div class="box green" id="box8"> </div></li>
+        <li><div class="box green" id="box9"> </div></li>
+        <li><div class="box green" id="box10"> </div></li>
+        <li><div class="box green" id="box11"> </div></li>
+        <li><div class="box green" id="box12"> </div></li>
+        <li><div class="box green" id="box13"> </div></li>
+        <li><div class="box green" id="box14"> </div></li>
+    </ul>    
+		<script>
+			TweenMax.to('#box1', 3, {x:50, repeat:-1});
+			TweenMax.to('#box2', 3, {y:30, repeat:-1});
+			TweenMax.to('#box3', 3, {alpha:0, repeat:-1});
+			TweenMax.to('#box4', 3, {borderRadius:"50% 50%", repeat:-1});
+			TweenMax.to('#box5', 3, {boxShadow:"0px 0px 20px 20px red", repeat:-1});
+			TweenMax.to('#box6', 3, {border:"5px solid rgb(0,255,0)", repeat:-1});
+			TweenMax.to('#box7', 3, {backgroundColor:"#ff0000", repeat:-1});
+			TweenMax.to('#box8', 3, {rotation:45, repeat:-1});
+			TweenMax.to('#box9', 3, {scale:0.3, repeat:-1});
+			TweenMax.to('#box10', 3, {scaleX: 0.3, repeat:-1});
+			TweenMax.to('#box11', 3, {skewX:30, repeat:-1});
+			TweenMax.to('#box12', 3, {skewY:30, repeat:-1});
+			CSSPlugin.defaultTransformPerspective = 30;
+			TweenMax.to('#box13', 3, {rotationX:60, repeat:-1});
+			TweenMax.to('#box14', 3, {rotationY:60, repeat:-1});
+			
+		</script>
+	</body>
+</html>

@@ -1,0 +1,186 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>TweenMax demon</title>
+        <script src="minified/TweenMax.min.js"></script>
+        <script src="minified/jquery-1.10.1.min.js"></script>
+        <script src="minified/jquery-ui.min.js"></script>
+        <!--tweenmax中文网演示实例 www.tweenmax.com.cn-->
+		<!-- Demo styles -->
+		<style>
+		body{
+		  background-color:#333;
+		  margin:0;
+		}
+		
+		#container{
+		  background-color:black;
+		  width:970px;
+		  height:400px;
+		  overflow:hidden;
+		  position:relative;
+		  
+		}
+		
+		#playPause{
+		  position:absolute;
+		  left:720px;
+		  top:350px;
+		  z-index:1;
+		}
+		
+		.creature{
+		  background:url(images/creature_red.png);
+		  width:27px;
+		  height:29px;
+		  
+		  position:absolute;
+		  
+		}
+		
+		
+		#slider{
+		  position:relative;  
+		  width:600px;
+		  top:20px;  
+		  left:25px;
+		  height:10px;
+		  background-color:rgba(255, 255, 255, 0.2);
+		}
+		
+		.ui-slider .ui-slider-handle { 
+		
+		  
+		}
+		.ui-widget-content {
+		  background-color:rgba(255, 255, 255, 0.2);
+		}
+					
+		.ui-slider-handle{
+		  margin-left: -5px !important; 
+		  height:20px !important; 
+		  margin-top:0px !important;
+		  width:10px;
+		  display:block;
+		  position:absolute;
+		  background:#fff;
+		  top:-5px;
+		  border-radius:3px;
+		}
+		button {
+		  width:100px;
+		  padding:10px;
+		}
+		</style>
+	</head>
+	<body>
+   <button id="playPause">play</button>
+   <div id="container"></div>
+   <div id="slider"></div>
+
+	<script>
+	var container = $("#container"),
+	tl;
+	
+	function getAnimation() {
+		var element = $('<div class="creature"/>');
+		container.append(element);
+		TweenLite.set(element, {
+			x: -30,
+			y: 300
+		})
+		//bezier magic provided by GSAP BezierPlugin (included with TweenMax)
+		//https://api.greensock.com/js/com/greensock/plugins/BezierPlugin.html
+		//create a semi-random tween 
+		var bezTween = new TweenMax(element, 6, {
+			bezier: {
+				type: "soft",
+				values: [{
+					x: 60,
+					y: 80
+				},
+				{
+					x: 150,
+					y: 30
+				},
+				{
+					x: 400 + Math.random() * 100,
+					y: 320 * Math.random() + 50
+				},
+				{
+					x: 500,
+					y: 320 * Math.random() + 50
+				},
+				{
+					x: 700,
+					y: 100
+				},
+				{
+					x: 850,
+					y: 500
+				}],
+				autoRotate: true
+			},
+			ease: Linear.easeNone
+		});
+		return bezTween;
+	}
+	
+	//create a bunch of Bezier tweens and add them to a timeline
+	function buildTimeline() {
+		tl = new TimelineMax({
+			repeat: 300,
+			onUpdate: updateSlider,
+			delay: 1
+		});
+		for (i = 0; i < 20; i++) {
+			//start creature animation every 0.17 seconds
+			tl.add(getAnimation(), i * 0.17);
+		}
+	}
+	
+	// --- jQueryUI Controls --- //
+	$("#slider").slider({
+		range: false,
+		min: 0,
+		max: 1,
+		step: 0.001,
+		slide: function(event, ui) {
+			tl.pause();
+			//adjust the timeline's progress() based on slider value
+			tl.progress(ui.value);
+		}
+	});
+	
+	function updateSlider() {
+		$("#slider").slider("value", tl.progress());
+	}
+	
+	$("#slider, .ui-slider-handle").mousedown(function() {
+		$('html, #slider, .ui-slider-handle').one("mouseup",
+		function(e) {
+			tl.resume();
+		});
+	});
+	
+	//smoothe play pause by tweening the timeScale()
+	$("#playPause").click(function() {
+		if (this.innerHTML === "play") {
+			this.innerHTML = "pause";
+			TweenLite.to(tl, 2, {
+				timeScale: 1
+			});
+		} else {
+			this.innerHTML = "play";
+			TweenLite.to(tl, 2, {
+				timeScale: 0
+			});
+		}
+	})
+	
+	buildTimeline();
+	tl.progress(0.5).timeScale(0);
+    </script>
+	</body>
+</html>

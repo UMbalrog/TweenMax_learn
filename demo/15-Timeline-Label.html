@@ -1,0 +1,434 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>TweenMax demon</title>
+        <script src="minified/TweenMax.min.js"></script>
+        <script src="minified/jquery-1.10.1.min.js"></script>
+        <script src="minified/utils/Draggable.min.js"></script>
+        <script src="minified/prettify.js"></script>
+        <!--tweenmax中文网演示实例 www.tweenmax.com.cn-->
+		<!-- Demo styles -->
+		<style>
+			.prettyprint {
+  font-family: "Consolas", "Bitstream Vera Sans Mono", "Courier New", Courier, monospace;
+  font-size: 17px;
+  font-weight: normal;
+  border: none;
+  line-height: 24px;
+  margin: 0 !important;
+  width: auto !important;
+  background: #262626;
+  border-radius: 6px;
+  color: #ccc; }
+  .prettyprint .str {
+    color: #EC7600; }
+  .prettyprint .kwd {
+    color: #93C763; }
+  .prettyprint .com {
+    color: #999999; }
+  .prettyprint .typ {
+    color: #72a5d8; }
+  .prettyprint .lit {
+    color: #FACD22; }
+  .prettyprint .pun {
+    color: #F1F2F3; }
+  .prettyprint .pln {
+    color: #F1F2F3; }
+  .prettyprint .tag {
+    color: #8AC763; }
+  .prettyprint .atn {
+    color: #E0E2E4; }
+  .prettyprint .atv {
+    color: #EC7600; }
+  .prettyprint .dec {
+    color: purple; }
+  .prettyprint ol, .prettyprint ul {
+    margin: 0px;
+    padding: 0px;
+    margin-left: 40px; }
+  .prettyprint ol li, .prettyprint ul li {
+    margin: 0px;
+    padding: 0px; }
+  .prettyprint ol.linenums {
+    margin-top: 0;
+    margin-bottom: 0; }
+  .prettyprint li.L0, .prettyprint li.L1, .prettyprint li.L2, .prettyprint li.L3, .prettyprint li.L4, .prettyprint li.L5, .prettyprint li.L6, .prettyprint li.L7, .prettyprint li.L8, .prettyprint li.L9 {
+    color: #777;
+    list-style-type: decimal;
+    padding-left: 20px;
+    padding-right: 20px;
+    margin-left: -40px; }
+  .prettyprint li.L1, .prettyprint li.L3, .prettyprint li.L5, .prettyprint li.L7, .prettyprint li.L9 {
+    background: #2a2a2a; }
+  @media print {
+    .prettyprint .str {
+      color: #060; }
+    .prettyprint .kwd {
+      color: #006;
+      font-weight: bold; }
+    .prettyprint .com {
+      color: #600;
+      font-style: italic; }
+    .prettyprint .typ {
+      color: #404;
+      font-weight: bold; }
+    .prettyprint .lit {
+      color: #044; }
+    .prettyprint .pun {
+      color: #440; }
+    .prettyprint .pln {
+      color: #000; }
+    .prettyprint .tag {
+      color: #006;
+      font-weight: bold; }
+    .prettyprint .atn {
+      color: #404; }
+    .prettyprint .atv {
+      color: #060; } }
+
+.prettyprint.wrap {
+  white-space: pre-wrap;
+  /* css-3 */
+  white-space: -moz-pre-wrap;
+  /* Mozilla, since 1999 */
+  white-space: -pre-wrap;
+  /* Opera 4-6 */
+  white-space: -o-pre-wrap;
+  /* Opera 7 */
+  word-wrap: break-word; }
+
+.prettyprint {
+  padding: 12px 18px;
+  min-width: 780px;
+  margin: 0; }
+
+li .prettyprint {
+  min-width: 740px; }
+
+.prettyprint.linenums {
+  padding: 12px 0px;
+  margin: 0 0 0 25px; }
+
+.post_wrap .prettyprint {
+  /* forums */
+  margin: 10px 0 !important; }
+		</style>
+        <style>
+        body {
+  margin:0;
+  background-color:#2f2f2f;
+}
+
+.demoBody {
+  background-color:#1d1d1d;
+  font-family: 'Signika Negative', sans-serif;
+  color:#989898;
+  font-size:16px;
+  width:838px;
+  margin:auto;
+}
+
+.timelineDemo { 
+  margin:auto;
+  background-color:#1d1d1d;
+  width:800px;
+  padding:20px 0;
+}
+
+.demoBody h1, .demoBody h2, .demoBody h3 {
+  margin: 10px 0 10px 0;
+  color:#f3f2ef;
+}
+
+.demoBody h1 { 
+  font-size:36px;
+}
+
+.demoBody h2 {
+  font-size:18px;
+  font-weight:300;
+}
+
+.demoBody h3 {
+  font-size:24px;
+}
+
+.demoBody p{
+  line-height:22px;
+  margin-bottom:16px;
+  width:650px;
+}
+
+
+.timelineDemo .box {
+  width:50px;
+  height:50px;
+  position:relative;
+  border-radius:6px;
+  margin-bottom:4px;
+}
+
+.timelineDemo .green{
+  background-color:#6fb936;
+}
+
+.timelineDemo .orange {
+  background-color:#f38630;
+}
+.timelineDemo .blue {
+  background-color:#338;
+}
+
+.timleineUI-row{
+  background-color:#2f2f2f;
+  margin:2px 0;
+  padding:4px 0;
+}
+
+.secondMarker {
+  width:155px;
+  border-left: solid 1px #aaa;
+  display:inline-block;
+  position:relative;
+  line-height:16px;
+  font-size:16px;
+  padding-left:4px;
+  color:#777;
+}
+
+.timelineUI-tween{
+  position:relative;
+  width:160px;
+  
+  height:16px;
+  border-radius:8px;
+  background: #a0bc58; /* Old browsers */
+background: -moz-linear-gradient(top,  #a0bc58 0%, #66832f 100%); /* FF3.6+ */
+background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#a0bc58), color-stop(100%,#66832f)); /* Chrome,Safari4+ */
+background: -webkit-linear-gradient(top,  #a0bc58 0%,#66832f 100%); /* Chrome10+,Safari5.1+ */
+background: -o-linear-gradient(top,  #a0bc58 0%,#66832f 100%); /* Opera 11.10+ */
+background: -ms-linear-gradient(top,  #a0bc58 0%,#66832f 100%); /* IE10+ */
+background: linear-gradient(to bottom,  #a0bc58 0%,#66832f 100%); /* W3C */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#a0bc58', endColorstr='#66832f',GradientType=0 ); /* IE6-9 */
+
+}
+.timelineUI-dragger-track{
+  position:relative;
+  width:810px;
+  margin-top:20px;
+  
+}
+
+
+.timelineUI-dragger{
+  position:absolute;
+  width:10px;
+  height:100px;
+  top:-20px;
+}
+
+.timelineUI-dragger div{
+  position:relative;
+  width: 0px;
+  height: 0;
+  border-style: solid;
+  border-width: 20px 10px 0 10px;
+  border-color: rgba(255, 0, 0, 0.4) transparent transparent transparent;
+  left:-10px;
+}
+
+.timelineUI-dragger div::after {
+  content:" ";
+  position:absolute;
+  width:1px;
+  height:95px;
+  top:-1px;
+  left:-1px;
+  border-left: solid 2px rgba(255, 0, 0, 0.4);
+}
+
+
+.timelineUI-dragger div::before {
+  content:" ";
+  position:absolute;
+  width:20px;
+  height:114px;
+  top:-20px;
+  left:-10px;
+}
+
+.timelineUI-time{
+  position:relative;
+  font-size:30px;
+  text-align:center;
+}
+
+
+.controls {
+  margin:10px 2px;
+}
+
+
+.prettyprint {
+  font-size:20px;
+  line-height:24px;
+}
+
+.timelineUI-button {
+  background: #414141;
+  background-image: -webkit-linear-gradient(top, #575757, #414141);
+  background-image: -moz-linear-gradient(top, #575757, #414141);
+  background-image: -ms-linear-gradient(top, #575757, #414141);
+  background-image: -o-linear-gradient(top, #575757, #414141);
+  background-image: linear-gradient(to bottom, #575757, #414141);
+  text-shadow: 0px 1px 0px #414141;
+  -webkit-box-shadow: 0px 1px 0px 414141;
+  -moz-box-shadow: 0px 1px 0px 414141;
+  box-shadow: 0px 1px 0px 414141;
+  color: #ffffff;
+  text-decoration: none;
+  margin: 0 auto;
+  -webkit-border-radius: 4;
+  -moz-border-radius: 4;
+  border-radius: 4px;
+  font-family: "Signika Negative", sans-serif;
+  text-transform: uppercase;
+  font-weight: 600;
+  display: table;
+  cursor: pointer;
+  font-size: 13px;
+  line-height: 18px; 
+   outline:none;
+  border:none;
+  display:inline-block;
+  padding: 8px 14px;}
+
+.timelineUI-button:hover {
+  background: #57a818;
+  background-image: -webkit-linear-gradient(top, #57a818, #4d9916);
+  background-image: -moz-linear-gradient(top, #57a818, #4d9916);
+  background-image: -ms-linear-gradient(top, #57a818, #4d9916);
+  background-image: -o-linear-gradient(top, #57a818, #4d9916);
+  background-image: linear-gradient(to bottom, #57a818, #4d9916);
+  text-shadow: 0px 1px 0px #32610e;
+  -webkit-box-shadow: 0px 1px 0px fefefe;
+  -moz-box-shadow: 0px 1px 0px fefefe;
+  box-shadow: 0px 1px 0px fefefe;
+  color: #ffffff;
+  text-decoration: none; }
+
+.demoBody .prettyprint {
+  min-width:300px;
+}
+        </style>
+	</head>
+	<body>
+        <div class="demoBody">
+
+  <div id="labels" class="timelineDemo">
+  <h1>Labels</h1>
+  <h2>Use a label ("string") to specify where a tween should be placed.</h2>
+    <div class="box green"></div>
+    <div class="box blue"></div>
+    <div class="box orange"></div>
+
+    <div class="timelineUI">
+      <div class="timelineUI-time" id="labelsTime">1.0</div>
+      <div class="timelineUI-dragger-track">
+      <div class="timelineUI-dragger" style="top:-4px"><div></div></div>
+      </div>
+      
+      <div>
+         <div class="secondMarker" style="left:320px;"><span style="color:#72a5d8; font-family:monospace">blueGreenSpin</span></div>
+      </div>
+      
+      <div>
+        <div class="secondMarker" style="margin-left:160px">1</div><div class="secondMarker"> 2</div><div class="secondMarker">3</div><div class="secondMarker">4</div>
+      </div>
+      
+      
+        <div class="timleineUI-row">
+        <div class="timelineUI-tween" style="width:160px"></div>
+      </div>
+      <div class="timleineUI-row">
+        <div class="timelineUI-tween" style="left:320px; width:320px;"></div>
+      </div>
+      <div class="timleineUI-row">
+        <div class="timelineUI-tween" style="left:400px; width:320px;"></div>
+      </div>
+    </div>
+    <div class="controls">
+      <button class="timelineUI-button play">play</button>
+    </div>
+    
+    <pre class="prettyprint">
+  <code>
+//tweens are inserted at and relative to a label's position
+var tl = new TimelineLite();
+tl.to("#green", 1, {x:750})
+  //add blueGreenSpin label 1 second after end of timeline
+  .addLabel("blueGreenSpin", "+=1")
+  //add tween at blueGreenSpin label
+  .to("#blue", 2, {x:750, rotation:360}, "blueGreenSpin")
+  //insert tween 0.5 seconds after blueGreenSpin label
+  .to("#orange", 2, {x:750, rotation:360}, "blueGreenSpin+=0.5");
+  </code>
+</pre>
+    
+
+  
+  </div>
+</div>
+
+
+		<script>
+			var $labelsTime = $("#labelsTime"),
+  labelsTimeline,
+  labelsTrackLength,
+  $labelsDragger = $("#labels .timelineUI-dragger"),
+  labelsDraggable;
+
+labelsTimeline = new TimelineLite({
+  onUpdate: labelsUpdateDragger,
+  paused: true
+});
+labelsTimeline
+  .to("#labels .green", 1, { x: 750 })
+  .addLabel("blueGreenSpin", "+=1")
+  .to("#labels .blue", 2, { x: 750, rotation: 360 }, "blueGreenSpin")
+  .to("#labels .orange", 2, { x: 750, rotation: 360 }, "blueGreenSpin+=0.5");
+
+labelsTrackLength = labelsTimeline.duration() * 160;
+
+function labelsUpdateDragger() {
+  TweenLite.set($labelsDragger, {
+    x: labelsTrackLength * labelsTimeline.progress()
+  });
+  $labelsTime.html(labelsTimeline.time().toFixed(2));
+}
+
+labelsDraggable = Draggable.create($labelsDragger, {
+  type: "x",
+  bounds: { minX: 0, maxX: labelsTrackLength },
+  trigger: "#labels .timelineUI-dragger div",
+  onDrag: function() {
+    labelsTimeline.progress(this.x / labelsTrackLength).pause();
+  }
+})[0];
+
+$("#labels .play").click(function() {
+  if (labelsTimeline.progress() < 1) {
+    labelsTimeline.play();
+  } else {
+    labelsTimeline.restart();
+  }
+});
+
+jQuery(window).load(function() {
+  prettyPrint();
+});
+
+		</script>
+	</body>
+</html>

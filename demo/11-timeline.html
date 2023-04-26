@@ -1,0 +1,224 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>TweenMax demon</title>
+        <script src="minified/TweenMax.min.js"></script>
+        <script src="minified/jquery-1.10.1.min.js"></script>
+        <script src="minified/jquery-ui.min.js"></script>
+        <!--tweenmax中文网演示实例 www.tweenmax.com.cn-->
+		<!-- Demo styles -->
+		<style>
+			body, h1, h2, h3, p {
+			  font-family: Arial, Helvetica, sans-serif;
+			  margin: 0;
+			  color: #fff;
+			}
+			
+			body {
+			  background-color:#000;
+			}
+			
+			h1 {
+			  position: relative;
+			  margin-top: 10px;
+			  font-size: 36px;
+			  font-weight: normal;
+			}
+			
+			h2 {
+			  position: relative;
+			  font-size: 22px;
+			  font-weight: normal;
+			  color: #cfcfcf;
+			}
+			
+			#demoWrapper {
+			  width: 600px;
+			  height: 350px;
+			  -webkit-font-smoothing: antialiased;
+			  color: black;
+			  margin:auto;
+			}
+
+			#info {
+			  margin-top: 20px;
+			}
+			#feature {
+			  position: relative;
+			  float: left;
+			}
+			#description {
+			  position: relative;
+			  float: left;
+			  margin-left: 20px;
+			  width: 290px;
+			  font-size: 16px;
+			  line-height: 24px;
+			}
+			#nav {
+			text-align:right;
+			  margin:20px 10px;
+			}
+			#nav img {
+			  text-align:center;
+			  position: relative;
+			  margin-right: 20px;
+			 
+			}
+			button {
+			  padding: 10px;
+			  margin-top: 10px;
+			}
+			
+			button:nth-child(1){
+			  margin-left:10px;
+			}
+			
+			#slider{
+			  width: 580px;
+			  margin:10px auto;
+			  position:relative;
+			  
+			}
+			
+			.ui-widget-content {
+			  background-color:rgba(255, 255, 255, 0.2);
+			}
+			
+			.ui-slider-handle{
+				height:20px;
+				width:10px;
+				display:block;
+				position:absolute;
+				background:#fff;
+				top:-5px;
+				border-radius:3px;
+				}
+		</style>
+	</head>
+	<body>
+        <div id="demoWrapper">
+          <div id="content">
+            <h1>Timeline</h1>
+            <h2>时间轴 -- 将一系列的动画连接起来</h2>
+            <div id="info">
+              <img src="images/feature_robust.png" width="240" height="151" id="feature">
+              <p id="description">TimelineLite是一个轻量级的、简单易用的时间轴类，可以用来建立和管理TweenLite、TweenMax、TimelineLite、TimelineMax等实例组成的队列。你可以想象，一个TimelineLite实例就像是一个虚拟的影片剪辑时间轴或是一个你可以在掌控时间的基础上在里面放置任何动画或Timeline的容器。</p></div>
+          </div>
+          <div style="clear:both"></div>
+          <div id="nav">
+            <img src="images/icon_robust.png" width="83" height="59">
+            <img src="images/icon_overwrite.png" width="43" height="59">
+            <img src="images/icon_compatible.png" width="73" height="59">
+            <img src="images/icon_support.png" width="83" height="59">
+            <img src="images/icon_plugin.png" width="76" height="59"></div>
+          <div>
+            <button id="play">play()</button>
+            <button id="pause">pause()</button>
+            <button id="reverse">reverse()</button>
+            <button id="resume">resume()</button>
+            <button id="stagger">play("stagger")</button>
+            <button id="restart">restart</button></div>
+          <div id="sliderWrapper">
+            <div id="slider" style="height:10px;"></div>
+          </div>
+        </div>
+
+		<script>
+			var head = $("h1"),
+				content = $("#content"),
+				subhead = $("h2"),
+				feature = $("#feature"),
+				description = $("#description"),
+				icons = $("#nav img");
+
+			//instantiate a TimelineLite    
+			var tl = new TimelineLite();
+
+			//add a from() tween at the beginning of the timline
+			tl.from(head, 0.5, {
+				left: 100,
+				opacity: 0
+			});
+
+			//add another tween immediately after
+			tl.from(subhead, 0.5, {
+				left: -100,
+				opacity: 0
+			});
+
+			//use position parameter "+=0.5" to schedule next tween 0.5 seconds after previous tweens end
+			tl.from(feature, 0.5, {
+				scale: .5,
+				autoAlpha: 0
+			}, "+=0.5");
+
+			//use position parameter "-=0.5" to schedule next tween 0.25 seconds before previous tweens end.
+			//great for overlapping
+			tl.from(description, 0.5, {
+				left: 100,
+				autoAlpha: 0
+			}, "-=0.25");
+
+			//add a label 0.5 seconds later to mark the placement of the next tween
+			tl.add("stagger", "+=0.5")
+			//to jump to this label use: tl.play("stagger");
+
+			//stagger the animation of all icons with 0.1s between each tween's start time
+			//this tween is added
+			tl.staggerFrom(icons, 0.2, {
+				scale: 0,
+				autoAlpha: 0
+			}, 0.1, "stagger");
+			
+			 /* --- Control playback methods --- */
+
+			$("#play").click(function() {
+				tl.play();
+			});
+
+			$("#pause").click(function() {
+				tl.pause();
+			});
+
+			$("#reverse").click(function() {
+				tl.reverse();
+			});
+
+			$("#resume").click(function() {
+				tl.resume();
+			});
+
+			$("#stagger").click(function() {
+				tl.play("stagger");
+			});
+
+			$("#restart").click(function() {
+				tl.restart();
+			});
+
+			//when the timeline updates, call the updateSlider function
+			tl.eventCallback("onUpdate", updateSlider);
+
+			$("#slider").slider({
+				range: false,
+				min: 0,
+				max: 100,
+				step: .1,
+				slide: function(event, ui) {
+					tl.pause();
+					//adjust the timeline's progress() based on slider value
+					tl.progress(ui.value / 100);
+				}
+			});
+
+			function updateSlider() {
+				console.log(tl.progress());
+				$("#slider").slider("value", tl.progress() * 100);
+			}
+
+			//tl.progress(1);
+		</script>
+	</body>
+</html>

@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>GreenSock 基础案例_TweenMax官网</title>
+<meta name="description" content="Tweenmax 是GreenSock 动画平台的核心插件，GreenSock 是一套用于在所有主流浏览器中制作高性能HTML5动画的工具。Tweenmax中文网提供TweenMax、TweenLite、TimelineMax、TimelineLite核心功能的中文文档和GreenSock 相关插件下载。" />
+<meta name="keywords" content="gsap动画，GreenSock，TweenMax，TweenLite，TimelineMax，TimelineLite，TweenMax.js，GreenSock使用方法，GreenSock官网，GreenSock参数，GreenSock动画效果库，TweenMax中文文档" />
+<link href="/templets/default/style/style.css" rel="stylesheet" media="screen" type="text/css" />
+<script src="/templets/default/js/jquery-1.10.1.min.js"></script>
+</head>
+<body id="demo-page">
+
+<div id="header">
+
+<div class="container">
+    <a href="https://www.tweenmax.com.cn" id="logo"><img src="/templets/default/images/logo.png"  alt="TweenMax官网"/></a>
+    
+    	<ul id="nav">
+          <li class="top"><a href="#" onclick="return false;">在线示例</a><div class="child"><ul><li><a href="/demo">GreenSock 基础示例</a></li><li><a href="/cool">GreenSock 实际应用</a></li></ul></div></li>
+          <li class="top"><a href="#" onclick="return false;">开始使用</a>
+            <div class="child"><ul>
+              <li><a href="/start/init">TweenMax 使用方法</a></li>
+              <li><a href="/start/overview">GreenSock 文件组成</a></li>
+            </ul></div></li>
+          <li class="top"><a href="#" onclick="return false;">中文文档</a>
+          
+            <div class="child">
+            <div class="block">
+            <p>核心工具</p>
+            <ul><li><a href="/api/tweenmax">TweenMax 文档</a></li>
+                <li><a href="/api/timelinemax">TimelineMax 文档</a></li>
+                </ul>
+                </div>
+            <div class="block">
+                <p>基础插件</p>    
+                <ul>
+                <li><a href="/CSSPlugin">CSSPlugin</a></li>
+                <li><a href="/BezierPlugin">BezierPlugin</a></li>
+                <li><a href="/ScrollToPlugin">ScrollToPlugin</a></li>
+                <li><a href="/TextPlugin">TextPlugin</a></li>
+                <li><a href="/AttrPlugin">AttrPlugin</a></li></ul>
+               </div>
+           <div class="block">
+              <p>商业插件</p>     
+               <ul> 
+                <li><a href="/start/SplitText">SplitText</a></li>
+                <li><a href="/start/Physics2DPlugin">Physics2DPlugin</a></li>
+                <li><a href="/start/DrawSVGPlugin">DrawSVGPlugin</a></li>
+                <li><a href="/start/MorphSVGPlugin">MorphSVGPlugin</a></li>
+                <li><a href="/ScrambleTextPlugin">ScrambleTextPlugin</a></li></ul>
+                </div>
+           
+           
+           </div>
+           </li>
+          <li class="top"><a href="#" onclick="return false;">插件下载</a><div class="child"><ul><li><a href="/source">GreenSock 文件下载</a></li><li><a href="/cdn">CDN</a></li></ul></div></li>
+          <li class="top"><a href="#" onclick="return false;">关于我们</a><div class="child"><ul><li><a href="/about">TweenMax 简介</a></li><li><a href="/license">GreenSock 许可</a></li></ul></div></li>
+          <li><a href="https://greensock.com/" target="_blank">GSAP英文网</a></li>
+    	</ul>
+    </div>
+</div><!-- //header -->
+
+<script>
+  $('.top').hover(function(){
+	  $(this).addClass('current');
+	    $(this).find('.child').show(0);
+		/*list=$(this).find('ul').children('li');
+		TweenMax.staggerFromTo(list, 1.2, {x:'-20px', opacity:0, delay:0.1}, {x:'0', opacity:1, ease:Elastic.easeOut}, 0.07);*/
+	  },function(){
+		  $(this).removeClass('current');
+                 $(this).find('.child').hide(0);
+                })
+</script>
+<div id="breadcrumb"><div class="container"> <a href='https://www.tweenmax.com.cn/'>首页</a> > <a href='/demo/'>GreenSock 基础案例</a></div></div>
+<div class="sub-head-container"><h1>GreenSock 基础案例</h1></div>
+
+<div class="page-content bggray">
+<div class="container clearfix">
+
+<div class="tr"><a href="https://www.tweenmax.com.cn/download/demo.zip" download="demo.zip" class="btn main-btn download-btn demo-dowmload-link"><i></i>下载全部demo</a></div>
+
+
+<div class="demo"><h3>01 TweenLite-基本数字动画</h3><div class="demo-iframe"><iframe data-src="/demo/01-TweenLite.html"></iframe><div class="restart"></div></div></div>
+<div class="demo"><h3>02 TweenMax-CSS动画</h3><div class="demo-iframe"><iframe data-src="/demo/02-TweenMax.html"></iframe><div class="restart"></div></div></div>
+<div class="demo"><h3>03 动画控制</h3><div class="demo-iframe"><iframe data-src="/demo/03-Control.html"></iframe><div class="restart"></div></div></div>
+<div class="demo"><h3>04 yoyo来回反复运动</h3><div class="demo-iframe"><iframe data-src="/demo/04-yoyo.html"></iframe><div class="restart"></div></div></div>
+<div class="demo"><h3>05 stagger错开动画</h3><div class="demo-iframe"><iframe data-src="/demo/05-stagger.html"></iframe><div class="restart"></div></div></div>
+<div class="demo"><h3>06 callback动画回调</h3><div class="demo-iframe"><iframe data-src="/demo/06-stagger-callbacks.html" style="height:350px;"></iframe><div class="restart"></div></div></div>
+<div class="demo"><h3>07 TweenMax-cycle序列动画的循环属性运用</h3><div class="demo-iframe"><iframe data-src="/demo/07-stagger-cycle.html" style="height:350px;"></iframe><div class="restart"></div></div></div>
+<div class="demo"><h3>08-圆形预加载动画</h3><div class="demo-iframe"><iframe data-src="/demo/08-Preloader.html" style="height:500px;"></iframe><div class="restart"></div></div></div>
+<div class="demo"><h3>11 Timeline-时间轴</h3><div class="demo-iframe"><iframe data-src="/demo/11-timeline.html" style="height:500px;"></iframe><div class="restart"></div></div></div>
+<div class="demo"><h3>12 TimelineMax-yoyo重复动画和动画属性</h3><div class="demo-iframe"><iframe data-src="/demo/12-timelinemax.html" style="height:350px;"></iframe><div class="restart"></div></div></div>
+<div class="demo"><h3>15 时间轴Label(标记)</h3><div class="demo-iframe"><iframe data-src="/demo/15-Timeline-Label.html" style="height:850px;"></iframe><div class="restart"></div></div></div>
+
+<div class="demo"><h3>16 时间轴文字动画</h3><div class="demo-iframe"><iframe data-src="/demo/16-TimelineLite-Basic3D.html" style="height:300px;"></iframe><div class="restart"></div></div></div>
+<div class="demo"><h3>17 时间轴文字动画2</h3><div class="demo-iframe"><iframe data-src="/demo/17-TimelineLite-css.html"></iframe><div class="restart"></div></div></div>
+
+<div class="demo"><h3>21 基础插件-CSSPlugin</h3><div class="demo-iframe"><iframe data-src="/demo/21-CSSPlugin.html" style="height:460px;"></iframe><div class="restart"></div></div></div>
+<div class="demo"><h3>23 基础插件-BezierPlugin贝塞尔曲线运动</h3><div class="demo-iframe"><iframe data-src="/demo/23-Bezier.html" style="height:460px;"></iframe><div class="restart"></div></div></div>
+<div class="demo"><h3>24 结合KineticJS制作画布</h3><div class="demo-iframe"><iframe data-src="/demo/24-KineticJS.html" style="height:450px;"></iframe><div class="restart"></div></div></div>
+
+<div class="demo"><h3>28 3D文字效果</h3><div class="demo-iframe"><iframe data-src="/demo/28-3Dtext.html" style="height:550px;"></iframe><div class="restart"></div></div></div>
+<div class="demo"><h3>29 3D变形</h3><div class="demo-iframe"><iframe data-src="/demo/29-Transforms.html" style="height:500px;"></iframe><div class="restart"></div></div></div>
+<div class="demo"><h3>31 SplitText插件，按字，词组和行分割文字</h3><div class="demo-iframe"><iframe data-src="/demo/31-SplitText.html" style="height:400px;"></iframe><div class="restart"></div></div></div>
+<div class="demo"><h3>32-DrawSVGPlugin插件，SVG绘画动画</h3><div class="demo-iframe"><iframe data-src="/demo/32-DrawSVGPlugin.html" style="height:600px;"></iframe><div class="restart"></div></div></div>
+<div class="demo"><h3>33-MorphSVGPlugin插件，SVG变形动画</h3><div class="demo-iframe"><iframe data-src="/demo/33-MorphSVGPlugin.html" style="height:600px;"></iframe></div></div>
+<div class="demo"><h3>34-MorphSVGPlugin插件，变化的数字</h3><div class="demo-iframe"><iframe data-src="/demo/34-MorphSVGPlugin-2.html" style="height:300px;"></iframe></div></div>
+<div class="demo"><h3>35-Physics2DPlugin插件，重力动画</h3><div class="demo-iframe"><iframe data-src="/demo/35-Physics2DPlugin.html" style="width:800px;height:262px;"></iframe></div></div>
+<div class="demo"><h3>36-DrawSVGPlugin插件，画1/4圆环</h3><div class="demo-iframe"><iframe data-src="/demo/36-DrawSVGPlugin-quarter-circle.html"></iframe><div class="restart"></div></div></div>
+<div class="demo"><h3>37-MorphSVGPlugin，GreenSock logo动画</h3><div class="demo-iframe"><iframe data-src="/demo/37-MorphSVGPlugin-GreenSock.html"></iframe></div></div>
+
+<div class="demo"><h3>41-GSDevTools插件，管理和测试时间轴</h3><div class="demo-iframe"><iframe data-src="/demo/41-GSDevTools.html" style="height:400px;"></iframe></div></div>
+
+<div class="demo"><h3>51 Draggable拖动组件<a href="/demo/51-Draggable.html" target="_blank">全屏显示</a></h3><div class="demo-iframe"><iframe data-src="/demo/51-Draggable.html" style="width:1200px;height:710px;"></iframe><div class="restart"></div></div></div>
+<div class="demo"><h3>52 ThrowPropsPlugin投掷道具组件<a href="/demo/52-ThrowPropsPlugin.html" target="_blank">全屏显示</a></h3><div class="demo-iframe"><iframe data-src="/demo/52-ThrowPropsPlugin.html" style="width:1000px;height:710px;"></iframe><div class="restart"></div></div></div>
+
+<div class="demo"><h3>53 ThrowPropsPlugin投掷道具组件<a href="/demo/53-ThrowPropsPlugin.html" target="_blank">全屏显示</a></h3><div class="demo-iframe"><iframe data-src="/demo/53-ThrowPropsPlugin.html" style="height:450px;"></iframe><div class="restart"></div></div></div>
+
+<div class="demo"><h3>54 拖动、投掷、2D物理组件</h3><div class="demo-iframe"><iframe data-src="/demo/54-ThrowPropsPlugin-Physics2DPlugin.html"></iframe><div class="restart"></div></div></div>
+
+
+<script language="javascript">
+function lazyLoadDemos() {
+		$('.demo').each(function() {
+			var frameHolder = $(this).find('.demo-iframe');
+			if (frameHolder.hasClass('loaded')) return;
+			var frame = frameHolder.find('iframe');
+			var src = frame.attr('data-src');
+			if (frameHolder.offset().top < ($(window).scrollTop() + $(window).height() + 50)) {
+				frameHolder.addClass('loaded');
+				frame.attr('src', src);
+			}
+		});
+	}
+
+
+$(window).on('scroll resize', function() {
+			lazyLoadDemos();
+		});		
+		lazyLoadDemos();
+	$(".restart").click(function(){
+		frm=$(this).parent().find("iframe");
+		src=frm.attr('data-src');
+		frm.attr('src',src);
+		})	
+</script>
+</div>
+</div>
+
+<!-- //底部模板 -->
+<div id="footer">
+<div class="container nav clearfix">
+   <aside id="describe">
+   <h3>TweenMax中文网</h3>
+   <p>TweenMax是GreenSock Animation Platform(GSAP)动画平台核心文件，TweenMax中文网提供TweenMax插件下载，以及TweenMax使用方法介绍、Tweenlite使用方法介绍、TimelineMax使用方法介绍、TimelineLite使用方法介绍。</p>
+   <p>此外还有TweenMax收费插件SplitText、Physics2DPlugin、DrawSVGPlugin、MorphSVGPlugin等的破解版下载及使用方法介绍。</p>
+   </aside>
+   <section class="links">
+       <h3>TweenMax演示及下载</h3>
+       <ul>
+       <li><a href="/demo/">GreenSock 基础Demo</a></li>
+       <li><a href="/cool/">GreenSock 应用Demo</a></li>
+       <li><a href="/source/">GreenSock 文件包下载</a></li>
+       <li><a href="/cdn/">GreenSock CDN</a></li>
+       </ul>
+   </section>
+    <section class="links">
+       <h3>使用方法</h3>
+       <ul>
+       <li><a href="/start/tweenmax/">TweenMax使用方法</a></li>
+       <li><a href="/start/timelinemax/">TimelineMax使用方法</a></li>
+       <li><a href="/start/splittext/">SplitText使用方法</a></li>
+       <li><a href="/start/physics2dplugin/">Physics2DPlugin使用方法</a></li>
+       <li><a href="/start/drawsvgplugin/">DrawSVGPlugin使用方法</a></li>
+       <li><a href="/start/morphsvgplugin/">MorphSVGPlugin使用方法</a></li>
+       </ul>
+   </section>
+      <section class="links">
+       <h3>关于TweenMax</h3>
+       <ul>
+       <li><a href="/about/">TweenMax简介</a></li>
+       <li><a href="/license/">GreenSock 许可</a></li>
+       <li><a href="/api/tweenmax/">TweenMax API</a></li>
+       <li><a href="/api/timelinemax/">TimelineMax API</a></li>
+       </ul>
+   </section>
+ 
+ 
+ 
+</div>
+<div class="container copyright">
+© www.tweenmax.com.cn 2019 <a href="#" style="color:inherit; text-decoration:none;" onclick="javascript:window.open('http://www.miitbeian.gov.cn');return false;"> 粤ICP备18011012号</a>
+</div>
+</div>
+
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?b6bd9fe7159a867fa1c3a1c8d5a818a9";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+</body>
+</html>

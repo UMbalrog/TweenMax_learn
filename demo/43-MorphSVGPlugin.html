@@ -1,0 +1,89 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<title>TweenMax demon</title>
+
+<script src="minified/jquery-1.10.1.min.js"></script>
+<script src="minified/TweenMax.min.js"></script>
+<script src="minified/MorphSVGPlugin.min.js"></script>
+<script src="minified/plugins/TextPlugin.min.js"></script>
+<script src="minified/DrawSVGPlugin.min.js"></script>
+
+<!--www.tweenmax.com.cn演示实例-->
+<!-- Demo styles -->
+<style>
+
+svg {
+	transition: all 5000ms ease-out;
+}
+body {
+  background: #1d1d1d;
+}
+
+#ora{
+  visibility:hidden;
+}
+</style>
+</head>
+<body>
+
+	<svg width="389" height="202" viewBox="0 0 389 202" fill="none" xmlns="http://www.w3.org/2000/svg">
+		<path id="path" d="M5.01765 197C4.67509 171.91 9.32316 147.003 18.6918 123.724C28.0605 100.445 41.9631 79.2588 59.5921 61.3955C77.2211 43.5322 98.2253 29.3479 121.385 19.6666C144.544 9.98536 169.397 5 194.5 5C219.603 5 244.456 9.98536 267.615 19.6666C290.775 29.3479 311.779 43.5322 329.408 61.3955C347.037 79.2588 360.939 100.445 370.308 123.724C379.677 147.003 384.325 171.91 383.982 197" stroke="url(#paint0_linear_122_2)" stroke-width="10" stroke-miterlimit="10" stroke-linecap="round"/>
+		<defs>
+			<linearGradient id="paint0_linear_122_2" x1="391.922" y1="102.292" x2="-2.9223" y2="102.292" gradientUnits="userSpaceOnUse">
+				<stop stop-color="#66C5DF"/>
+				<stop id="blue" offset="0.99" stop-color="#374E9A"/>
+				<!-- <stop offset="0.07" stop-color="#63BEDB"/>
+				<stop offset="0.16" stop-color="#59ACD2"/>
+				<stop offset="0.27" stop-color="#498DC2"/>
+				<stop offset="0.39" stop-color="#3463AB"/>
+				<stop offset="0.43" stop-color="#2C53A3"/>
+				<stop offset="0.45" stop-color="#374E9A"/>
+				<stop offset="0.6" stop-color="#75336A"/>
+				<stop offset="0.73" stop-color="#A61D44"/>
+				<stop offset="0.84" stop-color="#C90D29"/>
+				<stop offset="0.94" stop-color="#DE0318"/> -->
+				<stop offset="1" stop-color="#E60012"/>
+			</linearGradient>
+		</defs>
+	</svg>
+
+
+<script>
+
+// var hippo = $("#hippo").attr("d");
+
+// TweenLite.set("svg", {visibility:"visible"})
+
+var tl = new TimelineMax({
+	// repeatDelay:0.5, 
+	// delay:1
+});
+
+// let myTween = TweenLite.fromTo("#path", 5, 
+// 	{drawSVG:'0%'},
+// 	{drawSVG:"100%"}
+// );
+// myTween.yoyo(true).repeat(-1);
+
+// tl.to("#blue", 2, {morphSVG:"#ora" , ease:Back.easeInOut})
+let time = 0.99;
+let timer = setInterval(() => {
+	if(time < 0.45){
+		clearInterval(timer);
+	};
+	time -= 0.01; 
+	console.log(time);
+	$('#blue').attr('offset', time);
+}, 20);
+
+setTimeout()
+//   // .to("#ora", 1, {morphSVG:"#blue", ease:Back.easeOut});
+
+
+
+// tl.play();
+</script>
+</body>
+</html>

@@ -1,0 +1,73 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>TweenMax demon</title>
+		<script src="minified/TweenMax.min.js"></script>
+        <!--www.tweenmax.com.cn演示实例-->
+		<!-- Demo styles -->
+		<style>
+			body {
+				background: #fff;
+				font-family: "Signika Negative", sans-serif;
+				font-size: 14px;
+				color: #000;
+				margin: 0 10px;
+				padding: 0;
+			}
+            p{
+				margin-bottom:1em;
+			}
+			#demo {
+			  height:100%;
+			  position:relative;
+			  overflow:hidden;
+			}
+			.box {
+			  width:100px;
+			  height:100px;
+			  position:relative;
+			  border-radius:6px;
+			  margin-top:4px;
+			  text-align:center;
+			  line-height:100px;
+			  color:black;
+			  font-size:80px;
+			}
+			
+			.green{
+			  background-color:#6fb936;
+			}
+
+		</style>
+	</head>
+	<body>
+    <p>TweenMax、TimelineMax 比TweenLite、TimelineLite 功能更多，例如repeat 和yoyo。</p>
+	<div id="demo">
+             <div class="box green" id="greenBox">0</div>
+    </div>
+		<script>
+			//basic illustration of TweenMax's repeat, repeatDelay, yoyo and onRepeat
+			var box = document.getElementById("greenBox"),
+				count = 0,
+				tween;
+
+			tween = TweenMax.to(box, 2, {
+				left: "700px",
+				repeat: 10,
+				yoyo: true,
+				onRepeat: onRepeat,
+				repeatDelay: 0.5,
+				ease: Linear.easeNone
+			});
+
+			function onRepeat() {
+				count++;
+				box.innerHTML = count;
+				TweenLite.set(box, {
+					backgroundColor: "hsl(" + Math.random() * 255 + ", 90%, 60%)"
+				});
+			}
+		</script>
+	</body>
+</html>

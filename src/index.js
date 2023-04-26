@@ -651,7 +651,7 @@ TweenLite_p._initProps = function (
       this.vars.stringFilter,
       index
     );
-      // console.log('propLookup[p]', propLookup[p]);
+    console.log('propLookup[p]', propLookup[p]);
     
   }
 

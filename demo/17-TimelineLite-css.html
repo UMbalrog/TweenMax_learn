@@ -1,0 +1,190 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>TweenMax demon</title>
+        <script src="minified/TweenMax.min.js"></script>
+        <script src="minified/jquery-1.10.1.min.js"></script>
+        <script src="minified/jquery-ui.min.js"></script>
+
+        <!--tweenmax中文网演示实例 www.tweenmax.com.cn-->
+		<!-- Demo styles -->
+		<style>
+			body {
+			  font-family: Signika Negative, sans-serif;
+			  font-weight: 300;
+			  color: white;
+			  background-color: black;
+			  text-align: center;
+			}
+			#demo {
+			  text-align: center;
+			  margin-top:50px;
+			}
+			#bg {
+				  background-color:#000;
+			  position:relative;
+				  overflow:hidden;
+			  display:inline-block;
+				  width:500px;
+				  height:70px;
+				  border-radius: 8px;
+				  border: 2px solid #777;
+			}	
+			#text {
+				position:absolute;
+				text-align:center;
+				width:500px;
+				height:70px;
+				  line-height:68px;
+			  font-size: 28px;
+			}		
+			#text span {
+				  -webkit-font-smoothing: antialiased;
+				  -moz-font-smoothing:antialiased;
+				position:relative;
+				  display:inline-block;
+				  color:#FFF;
+			}	 
+			#slider {
+			  display: inline-block;
+				  width: 500px;
+				  height:12px;
+				  margin:8px 0px 8px 6px;	
+			height:10px;
+			margin:0 auto;
+			position:relative;
+			
+		  }
+		  
+		  .ui-widget-content {
+			background-color:rgba(255, 255, 255, 0.2);
+		  }
+		  
+		  .ui-slider-handle{
+			  height:20px;
+			  width:10px;
+			  display:block;
+			  position:absolute;
+			  background:#fff;
+			  top:-5px;
+			  border-radius:3px;
+			  }
+			#controls button {
+			  width: 80px;
+			}
+			#controls input {
+				  display:inline;
+				  padding:2px;
+				  margin:2px;
+			}
+		  
+		  
+		  
+		
+
+		</style>
+	</head>
+	<body> 
+        <div id="demo">
+          <div id="bg">
+            <div id="text">Impossible with CSS Animation.</div>
+          </div>
+        </div>
+        <div id="slider"></div>
+        <div id="controls">
+          <button id="pause">play</button>
+          <button id="reverse">reverse</button>
+          <button id="restart">restart</button>
+          <div>Speed: 
+            <label><input type="radio" name="speed" value="0.25" id="slow"> slow</label>
+            <label><input type="radio" name="speed" value="1" id="normal" checked> normal</label>
+            <label><input type="radio" name="speed" value="2" id="fast"> fast</label>
+          </div>
+        </div>
+
+		<script>
+			var $text = $("#text"),
+				$pause = $("#pause"),
+				$reverse = $("#reverse"),
+				$restart = $("#restart"),
+				$speed = $("input[name='speed']"),
+				$slider = $("#slider"),
+				//"tl" is the timeline we'll add our tweens to. Then we can easily control the whole sequence as one object. 
+				tl = new TimelineLite({onUpdate:updateSlider, onComplete:onComplete, onReverseComplete:onComplete, paused:true});
+			
+			function updateSlider() {
+			  $slider.slider("value", tl.progress() * 100);
+			}
+			function onComplete() {
+			  tl.pause();
+			  $pause.html("play");
+			}
+			
+			//do a simple split of the text so we can animate each character (doesn't require the advanced features of SplitText, so we just use split() and join())
+			$text.html("<span>" + $text.html().split("").join("</span><span>").split("<span> </span>").join("<span>&nbsp;</span>") + "</span>");
+			
+			//set a perspective on the container
+			TweenLite.set($text, {perspective:500});
+			
+			//all of the animation is created in this one line:
+			tl.staggerTo($("#text span"), 4, {transformOrigin:"50% 50% -30px", rotationY:-360, rotationX:360, rotation:360, ease:Elastic.easeInOut}, 0.02);
+			
+			//slider and button controls from here on...
+			$slider.slider({
+					  range: false,
+					  min: 0,
+					  max: 100,
+					  step:.1,
+					slide: function (event, ui) {
+							tl.progress( ui.value / 100 ).pause();
+				$pause.html("play");
+					}
+			});
+					
+			$pause.click(function() {
+			  if (tl.paused()) {
+					if (tl.progress() === 1 || (tl.progress() === 0 && tl.reversed())) {
+						tl.restart();
+					} else {
+						  tl.resume();
+					}
+				$pause.html("pause");
+			  } else {
+				tl.pause();
+				$pause.html("resume");
+			  }
+			});
+			
+			$reverse.click(function() {
+				  if (tl.progress() === 0) {
+				 if (tl.reversed()) {
+				   tl.play();
+				 } else {
+						   tl.reverse(0);
+				 }
+				$pause.html("pause");
+				  } else {
+						tl.reversed(!tl.reversed()).resume();
+				$pause.html("pause");
+				  }
+			});
+			
+			$restart.click(function(){
+				  tl.restart();
+			  $pause.html("pause");
+			});
+			
+			$speed.change(function(v, val) {
+			  tl.timeScale(parseFloat($(this).val()));
+			  if (tl.progress() === 1) {
+				tl.restart();
+				$pause.html("pause");
+			  } else if (tl.paused()) {
+				tl.resume();
+				$pause.html("pause");
+			  }
+			});
+		</script>
+	</body>
+</html>

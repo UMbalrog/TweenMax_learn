@@ -1,0 +1,25 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<title>TweenMax demon</title>
+<script src="minified/TweenLite.min.js"></script>
+<script src="minified/DrawSVGPlugin.min.js"></script>
+<!--www.tweenmax.com.cn演示实例-->
+<!-- Demo styles -->
+
+</head>
+<body>
+<svg width="100%" height="220" version="1.1"
+xmlns="http://www.w3.org/2000/svg">
+
+<circle cx="200" cy="150" r="100" stroke="green"
+stroke-width="8" fill="none" id="circle"/>
+
+</svg>
+
+<script>
+  var myTween=TweenLite.fromTo("#circle", 3, {drawSVG:'75% 75%'}, {drawSVG:"75% 100% "});
+        </script>
+</body>
+</html>

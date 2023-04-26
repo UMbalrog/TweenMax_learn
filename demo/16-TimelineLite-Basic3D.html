@@ -1,0 +1,169 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>TweenMax demon</title>
+        <script src="minified/TweenMax.min.js"></script>
+        <script src="minified/jquery-1.10.1.min.js"></script>
+        <script src="minified/jquery-ui.min.js"></script>
+        <script src="minified/SplitText.min.js"></script>
+
+        <!--tweenmax中文网演示实例 www.tweenmax.com.cn-->
+		<!-- Demo styles -->
+		<style>
+			html, body {
+			height: 100%;
+		  }
+		  
+		  body {
+			background-color:#1d1d1d;
+			color:#989898;
+			margin:0 10px;
+			font-size:16px;
+			font-family:Asap, sans-serif;
+		  }
+		  
+		  .product {
+			display:inline-block;
+			color:white;
+			font-size:60px;
+			font-family: 'Open Sans', sans-serif;
+		  }
+		  
+		  .suffix {
+			display:inline-block;
+			font-size:60px;
+			font-weight:700;
+			color:#86CC01;
+			font-family: 'Open Sans', sans-serif;
+		  }
+		  
+		  .tagline {
+			margin-left:20px;
+			font-size:36px;
+			font-style:italic;
+		  }
+		  
+		  #demo {
+			text-align:center;
+			height:100%;
+			position:relative;
+			overflow:hidden;
+		  }
+		  
+		  #controls {
+			margin-top:60px;
+			text-align: center;
+		  }
+		  
+		  #slider{
+			width: 400px;
+			height:10px;
+			margin:0 auto;
+			position:relative;
+			
+		  }
+		  
+		  .ui-widget-content {
+			background-color:rgba(255, 255, 255, 0.2);
+		  }
+		  
+		  .ui-slider-handle{
+			  height:20px;
+			  width:10px;
+			  display:block;
+			  position:absolute;
+			  background:#fff;
+			  top:-5px;
+			  border-radius:3px;
+			  }
+		  
+		  button {
+			padding:4px;
+			margin:10px 0 10px 0;
+		  }
+
+		</style>
+	</head>
+	<body>
+        <div id="demo">
+          <div class="product" id="timeline_txt">Timeline</div><div class="suffix" id="lite_txt">Lite</div><div class="tagline">Who's the boss of your tweens?</div>
+          <div id="controls">
+            <div id="slider"></div>
+            <button id="playBtn">play()</button>
+            <button id="pauseBtn">pause()</button>
+            <button id="resumeBtn">resume()</button>
+            <button id="reverseBtn">reverse()</button>
+            <button id="restartBtn">restart()</button>
+            <div>Speed: 
+              <label><input type="radio" name="speed" value="0.25" id="slow"> slow</label>
+              <label><input type="radio" name="speed" value="1" id="normal" checked> normal</label>
+              <label><input type="radio" name="speed" value="2" id="fast"> fast</label>
+            </div>
+           </div>
+        </div>
+
+		<script>
+			CSSPlugin.defaultTransformPerspective = 400;
+			var tagline = new SplitText(".tagline")
+				tl = new TimelineLite({onUpdate:updateSlider});
+			
+			tl.from("#timeline_txt", 1, {rotationY:45, z:-300, transformOrigin:"20% 50% -200", opacity:0})
+			  .from("#lite_txt", 0.6, {rotationY:-90, z:-600, transformOrigin:"80% 50% -100", opacity:0}, 0.4)
+			  .staggerFrom(tagline.chars, 0.3, {opacity:0, rotation:90, scale:0, x:20, y:60, ease:Back.easeOut}, 0.05)
+			
+			
+			// controls
+			
+			$( "#slider" ).slider({
+			  range: false,
+			  min: 0,
+			  max: 1,
+			  step:.001,
+			  slide: function ( event, ui ) {
+				tl.progress( ui.value ).pause();
+			  }
+			});	
+			
+			function updateSlider() {
+			  $("#slider").slider("value", tl.progress());
+			} 
+			
+			$("#playBtn").click(function(){
+			  //Play the timeline forward from the current position.
+			  //If tween is complete, play() will have no effect
+			  tl.play();
+			});
+			
+			$("#pauseBtn").click(function(){
+			  tl.pause();
+			});
+			
+			$("#resumeBtn").click(function(){
+			  //Resume playback in current direction.
+			  tl.resume();
+			});
+			
+			$("#reverseBtn").click(function(){
+			  tl.reverse();
+			});
+			
+			$("#restartBtn").click(function(){
+			  tl.restart();
+			});
+			
+			$("#timeScale").change(function() {
+			  tl.timeScale(this.value)
+			})
+			
+			$("input[name='speed']").change(function(v, val) {
+			  tl.timeScale(this.value);
+			  if (tl.progress() === 1) {
+				tl.restart();
+			  } else if (tl.paused()) {
+				tl.resume();
+			  }
+			});
+		</script>
+	</body>
+</html>

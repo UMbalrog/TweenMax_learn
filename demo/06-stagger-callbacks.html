@@ -1,0 +1,98 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>TweenMax demon</title>
+		<script src="minified/TweenMax.min.js"></script>
+        <script src="minified/jquery-1.10.1.min.js"></script>
+        <!--tweenmax中文网演示实例 www.tweenmax.com.cn-->
+		<!-- Demo styles -->
+<style>
+body {
+  background-color:#1d1d1d;
+  font-family: "Asap", sans-serif;
+  color:#989898;
+  margin:0 10px;
+  font-size:16px;
+}
+h2 {
+  font-size:30px;
+  font-family: "Signika Negative", sans-serif;
+  margin: 10px 0 10px 0;
+  color:#f3f2ef;
+}
+p{
+  line-height:22px;
+  margin-bottom:16px;
+  
+}
+
+#demo {
+  position:relative;
+}
+.box {
+  width:50px;
+  height:50px;
+  position:relative;
+  border-radius:6px;
+  margin-top:4px;
+  display:inline-block;
+  line-height:50px;
+  text-align:center;
+  color:#333;
+  font-size:24px;
+}
+.green{
+  background-color:#6fb936;
+}
+.orange {
+  background-color:#f38630;
+}
+.grey {
+  background-color:#989898;
+}
+#console {
+  width:400px;
+  min-height:150px;
+  background:#f3f2ef;
+  position:absolute;
+  left:200px;
+  display:inline-block;
+  padding:10px;
+  line-height:20px;
+  font-size:16px;
+  color:#333;
+  border-radius:8px;
+}
+.done {
+  color:#a00;
+  font-weight:bold;
+}
+</style>
+	</head>
+	<body>
+	  <h2>TweenMax.staggerTo() with callbacks</h2>
+        <div id="demo">
+          <p>每个stagger动画都是一个单独的动画。</p>
+          <div class="box green">1</div>
+          <div class="box grey">2</div>
+          <div class="box orange">3</div>
+          <div id="console"></div>
+        </div>
+		<script>
+			var $console = $("#console")
+
+			TweenMax.staggerTo(".box", 0.8, {rotation:360, y:120, onComplete:tweenComplete, onCompleteParams:["{self}"]}, 1.2, myCompleteAll);
+			
+			//单个动画完成事件
+			function tweenComplete(tween) {
+			  $console.append("<p> tween complete / target text = " + tween.target.innerHTML + "</p>")
+			}
+			
+			//全部动画完成事件
+			function myCompleteAll() {
+			  $console.append("<p class='done'> all tweens complete </p>");
+			}
+		</script>
+	</body>
+</html>
