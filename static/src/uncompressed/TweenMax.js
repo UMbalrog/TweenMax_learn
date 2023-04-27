@@ -6308,7 +6308,7 @@ if (_gsScope._gsDefine) { _gsScope._gsQueue.pop()(); } //necessary in case Tween
 
 /*
  * ----------------------------------------------------------------
- * Ease
+ * Ease 动画曲线函数
  * ----------------------------------------------------------------
  */
 		var _baseParams = [0, 0, 1, 1],
@@ -6372,7 +6372,7 @@ if (_gsScope._gsDefine) { _gsScope._gsQueue.pop()(); } //necessary in case Tween
 
 /*
  * ----------------------------------------------------------------
- * EventDispatcher
+ * EventDispatcher  事件watcher
  * ----------------------------------------------------------------
  */
 		var EventDispatcher = _class("events.EventDispatcher", function(target) {
@@ -6442,7 +6442,7 @@ if (_gsScope._gsDefine) { _gsScope._gsQueue.pop()(); } //necessary in case Tween
 
 /*
  * ----------------------------------------------------------------
- * Ticker
+ * Ticker  事件轴触发器
  * ----------------------------------------------------------------
  */
  		var _reqAnimFrame = window.requestAnimationFrame,
