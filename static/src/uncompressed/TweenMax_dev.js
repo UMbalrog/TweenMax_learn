@@ -8372,7 +8372,7 @@ if (_gsScope._gsDefine) {
   _gsScope._gsQueue.pop()();
 } //necessary in case TweenLite was already loaded separately.
 
-/*
+/* TweenLite.js  文件
  * ----------------------------------------------------------------
  * Base classes like TweenLite, SimpleTimeline, Ease, Ticker, etc.
  * ----------------------------------------------------------------
@@ -8755,6 +8755,7 @@ if (_gsScope._gsDefine) {
         overlap = _self.time - _nextTime;
         if (!_fps || overlap > 0 || manual === true) {
           _self.frame++;
+					// 计算时间好像没什么用，没有校准
           _nextTime += overlap + (overlap >= _gap ? 0.004 : _gap - overlap);
           dispatch = true;
         }
@@ -8762,6 +8763,8 @@ if (_gsScope._gsDefine) {
           //make sure the request is made before we dispatch the "tick" event so that timing is maintained. Otherwise, if processing the "tick" requires a bunch of time (like 15ms) and we're using a setTimeout() that's based on 16.7ms, it'd technically take 31.7ms between frames otherwise.
           _id = _req(_tick);
         }
+				// xycnum+=1;
+					// console.log('xycnum', xycnum)
         if (dispatch) {
           _self.dispatchEvent(_tickWord);
         }

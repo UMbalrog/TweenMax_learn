@@ -40,16 +40,16 @@ p {
 	scoreDisplay = document.getElementById("scoreDisplay");
 	
     //创建一个tween在20秒内改变score的属性值从0到100.
-	TweenLite.to(demo, 2 ,{
+	let tween = TweenLite.to(demo, 2 ,{
 		red:255,
 		score:5100,
 		ease: Power1.easeIn,
 		onUpdate:showScore
 	});
-	
+	console.log(tween);
 	//在tween update时通过这个function输出.
 	function showScore() {
-		console.log(demo.score);
+		// console.log(demo.score);
 		scoreDisplay.innerHTML = demo.score.toFixed(0);
 		scoreDisplay.style.color = `rgb(${demo.red}, 0, 0)`;
 		// for(var i=0; i<1000; i++){
