@@ -39,20 +39,45 @@
 		<script>
 			let tl = new TimelineLite({paused: true});
 			// let 
-			tl.to('.box', 2, {
+			tl.to('.box', 1, {
 				left: 700,
+				ease: Power0.easeIn,
+				useFrames: true
+			});                              // 2
+			tl.to('.box', 2, {               // 3 
+				top: 500,                       
+				// display: 'none',
 				ease: Power0.easeIn
-			})
-			tl.to('.box', 2, {
-				top: 500,
+			}, '+=1');												// 5
+			tl.to('.box', 2, {                // 4
+				left: 300,
+				// display: 'none',
 				ease: Power0.easeIn
 			});
+
+			setTimeout(() => {
+				tl.to('.box', 2, {                // 4
+					top: 900,
+					// display: 'none',
+					ease: Power0.easeIn
+				}, '-=2');
+				console.log('tianjia le ')
+			},4000)
+
+
+			// let t2 = new TimelineLite({paused: true});
+
+			// t2.to('.box', 1, {
+			// 	left: 1000,
+			// 	ease: Power0.easeIn,
+			// 	useFrames: true
+			// });  
 
 			function play() {
 				tl.play();
 			}
 			
-			console.log(tl)
+			console.log('TimelineLite', tl);
 		</script>
 	</body>
 </html>

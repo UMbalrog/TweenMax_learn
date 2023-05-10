@@ -124,6 +124,7 @@ var _gsScope =
         },
         TweenMax = function (target, duration, vars) {
           TweenLite.call(this, target, duration, vars);
+          this.className = "TweenMax";
           this._cycle = 0;
           this._yoyo = this.vars.yoyo === true || !!this.vars.yoyoEase;
           this._repeat = this.vars.repeat || 0;
@@ -907,7 +908,7 @@ var _gsScope =
 
   /*
    * ----------------------------------------------------------------
-   * TimelineLite
+   * TimelineLite 时间轴组件
    * ----------------------------------------------------------------
    */
   _gsScope._gsDefine(
@@ -920,6 +921,7 @@ var _gsScope =
             v = self.vars,
             val,
             p;
+          self.className = "TimelineLite";
           self._labels = {};
           self.autoRemoveChildren = !!v.autoRemoveChildren;
           self.smoothChildTiming = !!v.smoothChildTiming;
@@ -1287,6 +1289,7 @@ var _gsScope =
       };
 
       p.add = function (value, position, align, stagger) {
+        // _duration //最后一个动画的开始时间
         var self = this,
           curTime,
           l,
@@ -1294,10 +1297,12 @@ var _gsScope =
           child,
           tl,
           beforeRawTime;
+        // 开始播放时间计算器，返回s
         if (typeof position !== "number") {
-          position = self._parseTimeOrLabel(position, 0, true, value);
+          position = self._parseTimeOrLabel(position, 0, true, value); // 开始播放时间计算器，返回s
         }
-        if (!(value instanceof Animation)) {
+        // 判断类型分别添加
+        if (!(value instanceof Animation)) { 
           if (
             value instanceof Array ||
             (value && value.push && _isArray(value))
@@ -1335,9 +1340,10 @@ var _gsScope =
           }
         }
 
+        // 执行添加
         SimpleTimeline.prototype.add.call(self, value, position);
 
-        if (value._time || (!value._duration && value._initted)) {
+        if (value._time || (!value._duration && value._initted)) { //时间为零会立即执行渲染函数
           //in case, for example, the _startTime is moved on a tween that has already rendered. Imagine it's at its end state, then the startTime is moved WAY later (after the end of this timeline), it should render at its beginning.
           curTime = (self.rawTime() - value._startTime) * value._timeScale;
           if (
@@ -1464,7 +1470,7 @@ var _gsScope =
       ) {
         var clippedDuration, i;
         //if we're about to add a tween/timeline (or an array of them) that's already a child of this timeline, we should remove it first so that it doesn't contaminate the duration().
-        if (ignore instanceof Animation && ignore.timeline === this) {
+        if (ignore instanceof Animation && ignore.timeline === this) { // 防止重复添加
           this.remove(ignore);
         } else if (
           ignore &&
@@ -1548,6 +1554,7 @@ var _gsScope =
       };
 
       p.render = function (time, suppressEvents, force) {
+        // console.log('render~~~~~~~~~~~~', this.className)
         if (this._gc) {
           this._enabled(true, false);
         }
@@ -8755,7 +8762,7 @@ if (_gsScope._gsDefine) {
         overlap = _self.time - _nextTime;
         if (!_fps || overlap > 0 || manual === true) {
           _self.frame++;
-					// 计算时间好像没什么用，没有校准
+          // 计算时间好像没什么用，没有校准
           _nextTime += overlap + (overlap >= _gap ? 0.004 : _gap - overlap);
           dispatch = true;
         }
@@ -8763,8 +8770,8 @@ if (_gsScope._gsDefine) {
           //make sure the request is made before we dispatch the "tick" event so that timing is maintained. Otherwise, if processing the "tick" requires a bunch of time (like 15ms) and we're using a setTimeout() that's based on 16.7ms, it'd technically take 31.7ms between frames otherwise.
           _id = _req(_tick);
         }
-				// xycnum+=1;
-					// console.log('xycnum', xycnum)
+        // xycnum+=1;
+        // console.log('xycnum', xycnum)
         if (dispatch) {
           _self.dispatchEvent(_tickWord);
         }
@@ -8880,7 +8887,7 @@ if (_gsScope._gsDefine) {
       //some browsers (like iOS 6 Safari) shut down JavaScript execution when the tab is disabled and they [occasionally] neglect to start up requestAnimationFrame again when returning - this code ensures that the engine starts up again properly.
       _ticker.wake();
     }
-
+    // console.log('useFrames', this.vars.useFrames)
     var tl = this.vars.useFrames ? _rootFramesTimeline : _rootTimeline;
     tl.add(this, tl._time);
 
@@ -8930,6 +8937,7 @@ if (_gsScope._gsDefine) {
   };
 
   p.resume = function (from, suppressEvents) {
+    //重新开始
     if (from != null) {
       this.seek(from, suppressEvents);
     }
@@ -9301,7 +9309,7 @@ if (_gsScope._gsDefine) {
 
   p.add = p.insert = function (child, position, align, stagger) {
     var prevTween, st;
-    child._startTime = Number(position || 0) + child._delay;
+    child._startTime = Number(position || 0) + child._delay; 
     if (child._paused)
       if (this !== child._timeline) {
         //we only adjust the _pauseTime if it wasn't in this timeline already. Remember, sometimes a tween will be inserted again into the same timeline when its startTime is changed so that the tweens in the TimelineLite/Max are re-ordered properly in the linked list (so everything renders in the proper order).
@@ -9374,6 +9382,7 @@ if (_gsScope._gsDefine) {
     var tween = this._first,
       next;
     this._totalTime = this._time = this._rawPrevTime = time;
+    // console.log('simple render', tween)
     while (tween) {
       next = tween._next; //record it here because the value could change after rendering...
       if (
@@ -9415,6 +9424,7 @@ if (_gsScope._gsDefine) {
       "TweenLite",
       function (target, duration, vars) {
         Animation.call(this, duration, vars);
+        this.className = "TweenLite";
         this.render = TweenLite.prototype.render; //speed optimization (avoid prototype lookup on this "hot" method)
 
         if (target == null) {
@@ -9904,20 +9914,24 @@ if (_gsScope._gsDefine) {
         }
       }
       //if there are no more tweens in the root timelines, or if they're all paused, make the _timer sleep to reduce load on the CPU slightly
+      console.log("_rootFramesTimeline1", _rootFramesTimeline._first);
       p = _rootTimeline._first;
-      if (!p || p._paused)
+      if (!p || p._paused) {
         if (
           TweenLite.autoSleep &&
           !_rootFramesTimeline._first &&
           _ticker._listeners.tick.length === 1
         ) {
+          console.log("_rootFramesTimeline", _rootFramesTimeline);
           while (p && p._paused) {
+            // tween 每一个链表都暂停了，直到最后一个，后一个是空，则停止；
             p = p._next;
           }
           if (!p) {
             _ticker.sleep();
           }
         }
+      }
     }
   };
 

@@ -283,7 +283,7 @@ let xycnum = 0;
       listener,
       i;
     if (this === _ticker && !_tickerActive) {
-      _ticker.wake();
+      _ticker.wake(); // 注册时为启动就又启动一次
     }
     if (list == null) {
       this._listeners[type] = list = [];
@@ -358,6 +358,7 @@ let xycnum = 0;
     _lastUpdate = _getTime();
 
   _class("Ticker", function (fps, useRAF) {
+		this.funName = "Ticker";
     var _self = this,
       _startTime = _getTime(), // 开始时间
       _useRAF = useRAF !== false && _reqAnimFrame ? "auto" : false,
@@ -382,7 +383,7 @@ let xycnum = 0;
         }
         _lastUpdate += elapsed;
         _self.time = (_lastUpdate - _startTime) / 1000;
-        // console.log('_self.time', _self.time)
+        // console.log('_self.time', _lastUpdate)
         // console.log('elapsed', elapsed)
 
         overlap = _self.time - _nextTime;
@@ -399,7 +400,7 @@ let xycnum = 0;
           _id = _req(_tick);
         }
         // xycnum+=1;
-        // console.log('xycnum', xycnum)
+        console.log('xycnum', _self.time)
         if (dispatch) {
           _self.dispatchEvent(_tickWord);
         }
@@ -428,7 +429,7 @@ let xycnum = 0;
       if (_id !== null) {
         _self.sleep();
       } else if (seamless) {
-        _startTime += -_lastUpdate + (_lastUpdate = _getTime());
+        _startTime += -_lastUpdate + (_lastUpdate = _getTime()); //将之前的时间提到现在
       } else if (_self.frame > 10) {
         //don't trigger lagSmoothing if we're just waking up, and make sure that at least 10 frames have elapsed because of the iOS bug that we work around below with the 1.5-second setTimout().
         _lastUpdate = _getTime() - _lagThreshold + 5;
@@ -445,7 +446,7 @@ let xycnum = 0;
       if (_self === _ticker) {
         _tickerActive = true;
       }
-      console.log("seamless", _id, seamless);
+      // console.log("seamless", _id, seamless);
       _tick(2);
     };
 
@@ -468,9 +469,9 @@ let xycnum = 0;
       _useRAF = value;
       _self.fps(_fps);
     };
-    // 开始启动
+    // 开始启动，启动位置之一
     _self.fps(fps);
-    console.log("_self", _self);
+    // console.log("_self", _self);
 
     //a bug in iOS 6 Safari occasionally prevents the requestAnimationFrame from working initially, so we use a 1.5-second timeout that automatically falls back to setTimeout() if it senses this condition.
     setTimeout(function () {
@@ -489,17 +490,20 @@ let xycnum = 0;
 
   /*
    * ----------------------------------------------------------------
-   * Animation
+   * Animation 动画函数，处理记录动画的状态，时间，初始与结束状态
    * ----------------------------------------------------------------
    */
   var Animation = _class("core.Animation", function (duration, vars) {
-    this.vars = vars = vars || {};
-    this._duration = this._totalDuration = duration || 0;
-    this._delay = Number(vars.delay) || 0;
-    this._timeScale = 1;
-    this._active = !!vars.immediateRender;
+		this.funName = 'Animation';
+    this.vars = vars = vars || {}; //目标值
+    this._duration = this._totalDuration = duration || 0; //持续时间
+    this._delay = Number(vars.delay) || 0; //延迟时间
+    this._timeScale = 1; // 时间进率，1s == 1000ms
+    this._active = !!vars.immediateRender; // 播放状态
     this.data = vars.data;
     this._reversed = !!vars.reversed;
+
+    console.log('Animation', _rootTimeline);
 
     if (!_rootTimeline) {
       return;
@@ -510,14 +514,15 @@ let xycnum = 0;
     // }
 
     var tl = this.vars.useFrames ? _rootFramesTimeline : _rootTimeline;
-    tl.add(this, tl._time);
+    console.log('an', tl);
+    tl.add(this, tl._time); //将此动画添加到时间轴中
 
     if (this.vars.paused) {
       this.paused(true);
     }
   });
 
-  _ticker = Animation.ticker = new gs.Ticker();
+  _ticker = Animation.ticker = new gs.Ticker(); // 每个动画播放器都有自己的启动器是一个静态方法
   p = Animation.prototype;
   p._dirty = p._gc = p._initted = p._paused = false;
   p._totalTime = p._time = 0;
@@ -621,11 +626,13 @@ let xycnum = 0;
 
   /*
    * ----------------------------------------------------------------
-   * SimpleTimeline
+   * SimpleTimeline 简单时间周，执行render函数
+   * 管理动画链表，_first  _next
    * ----------------------------------------------------------------
    */
   var SimpleTimeline = _class("core.SimpleTimeline", function (vars) {
     Animation.call(this, 0, vars);
+		this.funName = 'SimpleTimeline';
     this.autoRemoveChildren = this.smoothChildTiming = true;
   });
 
@@ -633,7 +640,7 @@ let xycnum = 0;
   p.constructor = SimpleTimeline;
   // p.kill()._gc = false;
   p._first = p._last = p._recent = null;
-  p._sortChildren = false;
+  p._sortChildren = false; // 排列子项
 
   p.add = p.insert = function (child, position, align, stagger) {
     // console.log('insert', child)
@@ -649,7 +656,7 @@ let xycnum = 0;
       child.timeline._remove(child, true); //removes from existing timeline so that it can be properly added to this one.
     }
     child.timeline = child._timeline = this;
-    if (child._gc) {
+    if (child._gc) { // 是否启动？
       child._enabled(true, true);
     }
     prevTween = this._last;
@@ -708,12 +715,13 @@ let xycnum = 0;
   };
 
   p.render = function (time, suppressEvents, force) {
+    // console.log('time', time); 
     var tween = this._first,
       next;
-    this._totalTime = this._time = this._rawPrevTime = time;
-    // console.log('tween', tween)
+    this._totalTime = this._time = this._rawPrevTime = time; //
+    // console.log('SimpleTimelinerender', this)
     while (tween) {
-      next = tween._next; //record it here because the value could change after rendering...
+      next = tween._next; // 先在此处记录它，因为渲染后值可能会更改
       if (
         tween._active ||
         (time >= tween._startTime && !tween._paused && !tween._gc)
@@ -754,6 +762,7 @@ let xycnum = 0;
       function (target, duration, vars) {
         Animation.call(this, duration, vars);
         this.render = TweenLite.prototype.render; //speed optimization (avoid prototype lookup on this "hot" method)
+				this.funName = 'TweenLite';
 
         if (target == null) {
           throw "Cannot tween a null target.";
@@ -823,7 +832,7 @@ let xycnum = 0;
           }
         } else {
           this._propLookup = {};
-          this._siblings = _register(target, this, false);
+          this._siblings = _register(target, this, false); // 注册 _gsTweenID 
           if (overwrite === 1)
             if (this._siblings.length > 1) {
               _applyOverwrite(target, this, null, 1, this._siblings);
@@ -834,7 +843,7 @@ let xycnum = 0;
           (duration === 0 &&
             this._delay === 0 &&
             this.vars.immediateRender !== false)
-        ) {
+        ) { // 判断是否立即渲染，
           this._time = -_tinyNum; //forces a render without having to set the render() "force" parameter to true because we want to allow lazying by default (using the "force" parameter always forces an immediate full render)
           this.render(Math.min(0, -this._delay)); //in case delay is negative
         }
@@ -890,12 +899,12 @@ let xycnum = 0;
   TweenLite.ticker = _ticker;
   TweenLite.autoSleep = 120;
 
-  var _lazyTweens = [],
-    _lazyLookup = {},
+  var _lazyTweens = [], // 延迟动画队列
+    _lazyLookup = {}, // 延迟队列查找
     _numbersExp = /(?:(-|-=|\+=)?\d*\.?\d*(?:e[\-+]?\d+)?)[0-9]/gi,
     _relExp = /[\+-]=-?[\.\d]/,
     //_nonNumbersExp = /(?:([\-+](?!(\d|=)))|[^\d\-+=e]|(e(?![\-+][\d])))+/ig,
-    _setRatio = function (v) {
+    _setRatio = function (v) { // 处理时间比率
       var pt = this._firstPT,
         min = 0.000001,
         val;
@@ -1010,7 +1019,7 @@ let xycnum = 0;
       return a;
     },
     //note: "funcParam" is only necessary for function-based getters/setters that require an extra parameter like getAttribute("width") and setAttribute("width", value). In this example, funcParam would be "width". Used by AttrPlugin for example.
-    _addPropTween = function (
+    _addPropTween = function ( //将传入属性链表化
       target,
       prop,
       start,
@@ -1113,7 +1122,7 @@ let xycnum = 0;
     _reservedProps = (_internals.reservedProps = {
       ease: 1,
       delay: 1,
-      overwrite: 1,
+      overwrite: 1, // 用来控制同一个对象上有多个动画时的覆盖之类的情况。
       onComplete: 1,
       onCompleteParams: 1,
       onCompleteScope: 1,
@@ -1134,7 +1143,7 @@ let xycnum = 0;
       onRepeatScope: 1,
       easeParams: 1,
       yoyo: 1,
-      immediateRender: 1,
+      immediateRender: 1, // 立即渲染，默认true。渲染动画的初始位置
       repeat: 1,
       repeatDelay: 1,
       data: 1,
@@ -1159,19 +1168,19 @@ let xycnum = 0;
       true: 1,
       false: 0,
     },
-    _rootFramesTimeline = (Animation._rootFramesTimeline =
-      new SimpleTimeline()),
+    _rootFramesTimeline = (Animation._rootFramesTimeline = new SimpleTimeline()),
     _rootTimeline = (Animation._rootTimeline = new SimpleTimeline()),
-    _nextGCFrame = 30;
-
+    _nextGCFrame = 30; // 自动执行30帧，
+  console.log('创建时间轴', _rootTimeline);
   _rootTimeline._startTime = _ticker.time;
-
   _rootFramesTimeline._startTime = _ticker.frame;
+
   _rootTimeline._active = _rootFramesTimeline._active = true;
 
   Animation._updateRoot = TweenLite.render = function () {
     var i, a, p;
 
+    // 传入当前进行了多久
     _rootTimeline.render(
       (_ticker.time - _rootTimeline._startTime) * _rootTimeline._timeScale,
       false,
@@ -1184,9 +1193,10 @@ let xycnum = 0;
       false
     );
 
-    if (_ticker.frame >= _nextGCFrame) {
+    if (_ticker.frame >= _nextGCFrame) { //每 30 + 120 帧执行一次停止检测
       //dump garbage every 120 frames or whatever the user sets TweenLite.autoSleep to
       _nextGCFrame = _ticker.frame + (parseInt(TweenLite.autoSleep, 10) || 120);
+      // console.log('_nextGCFrame', _nextGCFrame)
       for (p in _tweenLookup) {
         a = _tweenLookup[p].tweens;
         i = a.length;
@@ -1200,13 +1210,16 @@ let xycnum = 0;
         }
       }
       //if there are no more tweens in the root timelines, or if they're all paused, make the _timer sleep to reduce load on the CPU slightly
+      
       p = _rootTimeline._first;
-      if (!p || p._paused)
+      console.log('_rootFramesTimeli~~~~~~~~~~~', p && p._paused);
+      if (!p || p._paused) // tween 被删除或者是停止了
         if (
           TweenLite.autoSleep &&
           !_rootFramesTimeline._first &&
           _ticker._listeners.tick.length === 1
         ) {
+          // console.log('_rootFramesTimeline', _rootFramesTimeline);
           while (p && p._paused) {
             p = p._next;
           }
@@ -1218,6 +1231,8 @@ let xycnum = 0;
   };
 
   _ticker.addEventListener("tick", Animation._updateRoot);
+
+	// console.log('_ticker', _ticker);
 
   var _register = function (target, tween, scrub) {
     var id = target._gsTweenID,
